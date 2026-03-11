@@ -235,7 +235,8 @@ button {
 }
 
 .screen-two-column > .surface {
-  min-height: fit-content;
+  height: auto;
+  align-self: start;
 }
 
 .screen-question {
@@ -834,6 +835,12 @@ button {
   .screen-two-column,
   .question-layout {
     grid-template-columns: 1fr;
+  }
+
+  .screen-two-column {
+    grid-auto-rows: max-content;
+    align-items: start;
+    padding-bottom: 8px;
   }
 
   .hero-stats {
