@@ -228,6 +228,14 @@ button {
 
 .screen-two-column {
   grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  align-content: start;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 2px;
+}
+
+.screen-two-column > .surface {
+  min-height: fit-content;
 }
 
 .screen-question {
