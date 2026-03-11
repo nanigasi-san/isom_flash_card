@@ -5,12 +5,14 @@ export default function App() {
   const {
     phase,
     questionCount,
+    difficulty,
     questions,
     currentIndex,
     currentQuestion,
     score,
     sessionError,
     setQuestionCount,
+    setDifficulty,
     startSession,
     answerChoice,
     moveToNext,
@@ -20,13 +22,20 @@ export default function App() {
 
   return (
     <div className="app-shell">
+      {phase !== "setup" ? (
+        <button type="button" className="home-button" onClick={resetSession}>
+          HOME
+        </button>
+      ) : null}
       <div className="app-grid">
         <main className="app-main">
           {phase === "setup" ? (
             <SetupScreen
               questionCount={questionCount}
+              difficulty={difficulty}
               sessionError={sessionError}
               onSelectCount={setQuestionCount}
+              onSelectDifficulty={setDifficulty}
               onStart={startSession}
             />
           ) : null}

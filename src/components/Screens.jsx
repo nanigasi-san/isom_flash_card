@@ -1,12 +1,36 @@
 import { isomItems, uniqueJapaneseNames } from "../data/isomDataset";
-import { QUESTION_COUNT_OPTIONS } from "../lib/quiz";
-import { AnswerCard, MetaPill, SummaryCard, Surface } from "./ui";
+import { QUESTION_COUNT_OPTIONS, QUIZ_DIFFICULTY_OPTIONS } from "../lib/quiz";
+import { MetaPill, SummaryCard, Surface } from "./ui";
 
 function getQuestionLabel(question) {
   return question?.item?.japaneseName || question?.item?.englishName || "名称不明";
 }
 
-export function SetupScreen({ questionCount, sessionError, onSelectCount, onStart }) {
+function findItemByJapaneseName(name) {
+  if (!name) {
+    return null;
+  }
+
+  const matchedItems = isomItems.filter((item) => item.japaneseName === name);
+
+  if (matchedItems.length !== 1) {
+    return null;
+  }
+
+  return matchedItems[0];
+}
+
+export function SetupScreen({
+  questionCount,
+  difficulty,
+  sessionError,
+  onSelectCount,
+  onSelectDifficulty,
+  onStart,
+}) {
+  const selectedDifficulty =
+    QUIZ_DIFFICULTY_OPTIONS.find((option) => option.value === difficulty) || QUIZ_DIFFICULTY_OPTIONS[0];
+
   return (
     <div className="screen screen-two-column">
       <Surface eyebrow="Setup" title="問題数を選ぶ" bodyClassName="stack">
@@ -25,7 +49,27 @@ export function SetupScreen({ questionCount, sessionError, onSelectCount, onStar
             </button>
           ))}
         </div>
-        <div className="selection-pill">現在の問題数: {questionCount}問</div>
+        <div className="difficulty-grid">
+          {QUIZ_DIFFICULTY_OPTIONS.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              className={`difficulty-button ${difficulty === option.value ? "is-active" : ""}`.trim()}
+              onClick={() => onSelectDifficulty(option.value)}
+            >
+              <span className="difficulty-title">難易度: {option.label}</span>
+              <span className="difficulty-note">
+                {option.value === "normal"
+                  ? "全記号から6択"
+                  : "同じ100番台のみ（600番台は3択）"}
+              </span>
+            </button>
+          ))}
+        </div>
+        <div className="selection-row">
+          <div className="selection-pill">現在の問題数: {questionCount}問</div>
+          <div className="selection-pill">難易度: {selectedDifficulty.label}</div>
+        </div>
         <button type="button" className="primary-button" onClick={onStart}>
           はじめる
         </button>
@@ -39,7 +83,7 @@ export function SetupScreen({ questionCount, sessionError, onSelectCount, onStar
           </div>
           <div className="rule-card">
             <strong>2</strong>
-            <span>日本語名を 6 択から選ぶ</span>
+            <span>普通: 全体6択 / 難しい: 同100番台（600番台は3択）</span>
           </div>
           <div className="rule-card">
             <strong>3</strong>
@@ -102,33 +146,71 @@ export function QuestionScreen({ question, currentIndex, totalQuestions, score, 
 }
 
 export function FeedbackScreen({ question, isLastQuestion, onNext }) {
-  const label = getQuestionLabel(question);
-  const selected = question?.selectedChoice || "未回答";
-  const judgeClassName = question.isCorrect ? "is-correct" : "is-incorrect";
+  const correctItem = question?.item || null;
+  const correctLabel = getQuestionLabel(question);
+  const selectedLabel = question?.selectedChoice || "未選択";
+  const selectedItem = findItemByJapaneseName(question?.selectedChoice);
+  const selectedNumber = selectedItem?.number || "-";
+  const isCorrect = Boolean(question?.isCorrect);
+  const toneClassName = isCorrect ? "is-correct" : "is-incorrect";
 
   return (
-    <div className="screen screen-two-column">
-      <Surface eyebrow="Feedback" title="答え合わせ" bodyClassName="stack feedback-body">
-        <div className={`judge-banner ${judgeClassName}`}>
-          <p className={`judge-main ${judgeClassName}`}>{question.isCorrect ? "正解！" : "不正解！"}</p>
-          <p className="judge-sub">
-            {question.isCorrect
-              ? "その調子です。次の問題へ進みましょう。"
-              : "正解名を確認して次に進みましょう。"}
-          </p>
-        </div>
-        <div className={`answer-matrix ${judgeClassName}`}>
-          <AnswerCard label="番号" value={question.item.number} />
-          <AnswerCard label="あなたの解答" value={selected} />
-          <AnswerCard label="正解" value={label} className="answer-card-wide" />
-        </div>
-        <button type="button" className="primary-button" onClick={onNext}>
+    <div className="screen screen-feedback">
+      <Surface className={`feedback-surface ${toneClassName}`.trim()} bodyClassName="feedback-layout">
+        <h2 className={`feedback-status ${toneClassName}`.trim()}>{isCorrect ? "正解！" : "不正解"}</h2>
+
+        {isCorrect ? (
+          <>
+            <div className="feedback-meta-single">
+              <p className="feedback-number">{correctItem?.number || "-"}</p>
+              <p className="feedback-label">{correctLabel}</p>
+            </div>
+            <div className="feedback-image-row feedback-image-row-single">
+              <div className="feedback-image-box">
+                {correctItem?.svgPath ? (
+                  <img src={correctItem.svgPath} alt={`${correctItem.number} ${correctLabel}`} />
+                ) : (
+                  <span>画像なし</span>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="feedback-compare-meta">
+              <div className="feedback-compare-col">
+                <p className="feedback-col-title">あなたの回答</p>
+                <p className="feedback-number">{selectedNumber}</p>
+                <p className="feedback-label">{selectedLabel}</p>
+              </div>
+              <div className="feedback-compare-col">
+                <p className="feedback-col-title">問題の正解</p>
+                <p className="feedback-number">{correctItem?.number || "-"}</p>
+                <p className="feedback-label">{correctLabel}</p>
+              </div>
+            </div>
+            <div className="feedback-image-row">
+              <div className="feedback-image-box">
+                {selectedItem?.svgPath ? (
+                  <img src={selectedItem.svgPath} alt={`${selectedNumber} ${selectedLabel}`} />
+                ) : (
+                  <span>画像なし</span>
+                )}
+              </div>
+              <div className="feedback-image-box">
+                {correctItem?.svgPath ? (
+                  <img src={correctItem.svgPath} alt={`${correctItem.number} ${correctLabel}`} />
+                ) : (
+                  <span>画像なし</span>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+
+        <button type="button" className="primary-button feedback-next-button" onClick={onNext}>
           {isLastQuestion ? "結果を見る" : "次の問題へ"}
         </button>
-      </Surface>
-
-      <Surface eyebrow="Symbol" title={question.item.number} bodyClassName="symbol-card">
-        <img src={question.item.svgPath} alt={`${question.item.number} ${label}`} />
       </Surface>
     </div>
   );

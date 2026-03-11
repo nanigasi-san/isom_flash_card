@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createQuestions, DEFAULT_QUESTION_COUNT } from "../lib/quiz";
+import { createQuestions, DEFAULT_QUESTION_COUNT, DEFAULT_QUIZ_DIFFICULTY } from "../lib/quiz";
 
 const SESSION_ERROR_MESSAGE =
   "問題の生成に失敗しました。ページを再読み込みして、もう一度試してください。";
@@ -7,6 +7,7 @@ const SESSION_ERROR_MESSAGE =
 export function useQuizSession() {
   const [phase, setPhase] = useState("setup");
   const [questionCount, setQuestionCount] = useState(DEFAULT_QUESTION_COUNT);
+  const [difficulty, setDifficulty] = useState(DEFAULT_QUIZ_DIFFICULTY);
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -16,7 +17,7 @@ export function useQuizSession() {
 
   function startSession() {
     try {
-      const nextQuestions = createQuestions(questionCount);
+      const nextQuestions = createQuestions(questionCount, difficulty);
 
       if (nextQuestions.length === 0) {
         throw new Error("No quiz questions were generated.");
@@ -86,12 +87,14 @@ export function useQuizSession() {
   return {
     phase,
     questionCount,
+    difficulty,
     questions,
     currentIndex,
     currentQuestion,
     score,
     sessionError,
     setQuestionCount,
+    setDifficulty,
     startSession,
     answerChoice,
     moveToNext,
