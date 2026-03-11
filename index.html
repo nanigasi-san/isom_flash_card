@@ -1,80 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ISOM Flash Card Game</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="page-shell">
-    <header class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">ISOM TRAINER</p>
-        <h1>ISOM Flash Card Game</h1>
-        <p class="hero-text">
-          記号、番号、名称の対応を10問ずつ確認する学習ゲームです。
-          113件のISOM記号を使って、3つの出題モードで反復できます。
-        </p>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-card">
-          <span class="stat-label">モード</span>
-          <strong>3</strong>
-        </div>
-        <div class="stat-card">
-          <span class="stat-label">問題数</span>
-          <strong>10 / session</strong>
-        </div>
-        <div class="stat-card">
-          <span class="stat-label">素材</span>
-          <strong id="item-count">113 symbols</strong>
-        </div>
-      </div>
-    </header>
-
-    <main class="app-shell">
-      <aside class="control-panel">
-        <section class="panel-block">
-          <p class="panel-label">Mode</p>
-          <div id="mode-selector" class="mode-selector" role="radiogroup" aria-label="Quiz mode"></div>
-        </section>
-
-        <section class="panel-block">
-          <p class="panel-label">Session</p>
-          <div class="session-meta">
-            <div>
-              <span class="meta-label">選択中</span>
-              <strong id="selected-mode-title">記号 + 番号 -> 名称</strong>
-            </div>
-            <div>
-              <span class="meta-label">進行</span>
-              <strong id="session-status">開始前</strong>
-            </div>
-          </div>
-          <button id="start-button" class="primary-button" type="button">10問スタート</button>
-        </section>
-
-        <section class="panel-block panel-note">
-          <p class="panel-label">How it works</p>
-          <ul>
-            <li>各セッションは10問固定です。</li>
-            <li>各問題は6択です。</li>
-            <li>正誤は最後にまとめて表示します。</li>
-          </ul>
-        </section>
-      </aside>
-
-      <section class="game-panel">
-        <div id="screen-root"></div>
-      </section>
-    </main>
-  </div>
-
-  <noscript>このアプリを使うには JavaScript を有効にしてください。</noscript>
-  <script src="app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ISOM Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
