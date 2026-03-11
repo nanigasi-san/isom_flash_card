@@ -185,6 +185,7 @@ button {
 .app-main,
 .screen {
   min-height: 0;
+  overflow: hidden;
 }
 
 .app-main {
@@ -202,16 +203,14 @@ button {
 }
 
 .screen-question {
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
-.screen-question > .surface:first-child,
-.screen-question > .surface:last-child {
+.screen-question > .surface:first-child {
   padding-block: 12px;
 }
 
-.screen-question > .surface:first-child .surface-title,
-.screen-question > .surface:last-child .surface-title {
+.screen-question > .surface:first-child .surface-title {
   font-size: clamp(1.02rem, 1.5vw, 1.2rem);
 }
 
@@ -368,8 +367,7 @@ button {
   font-size: 1.4rem;
 }
 
-.progress-meta,
-.submit-row {
+.progress-meta {
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -397,6 +395,8 @@ button {
 }
 
 .question-layout > .surface {
+  display: flex;
+  flex-direction: column;
   min-height: 0;
 }
 
@@ -431,9 +431,10 @@ button {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-rows: minmax(0, 1fr);
+  flex: 1;
   align-content: stretch;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 10px;
 }
 
 .choice-button {
@@ -478,6 +479,55 @@ button {
 
 .answer-matrix {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.judge-banner {
+  padding: 12px 14px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--panel-strong);
+}
+
+.judge-banner.is-correct {
+  border-color: rgba(35, 69, 50, 0.35);
+  background: linear-gradient(135deg, rgba(35, 69, 50, 0.14), rgba(35, 69, 50, 0.04));
+}
+
+.judge-banner.is-incorrect {
+  border-color: rgba(176, 78, 78, 0.35);
+  background: linear-gradient(135deg, rgba(176, 78, 78, 0.15), rgba(176, 78, 78, 0.05));
+}
+
+.judge-main {
+  margin: 0;
+  font-family: "Space Grotesk", "Noto Sans JP", sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.3rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.judge-main.is-correct {
+  color: #1f6a3e;
+}
+
+.judge-main.is-incorrect {
+  color: #bb2f2f;
+}
+
+.judge-sub {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.answer-matrix.is-correct .answer-card {
+  border-color: rgba(35, 69, 50, 0.22);
+}
+
+.answer-matrix.is-incorrect .answer-card {
+  border-color: rgba(176, 78, 78, 0.24);
 }
 
 .answer-card {
@@ -566,8 +616,7 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .progress-meta,
-  .submit-row {
+  .progress-meta {
     flex-direction: column;
     align-items: stretch;
   }
@@ -593,11 +642,11 @@ button {
 
 @media (max-height: 780px) {
   .app-shell {
-    padding: 8px;
+    padding: 6px;
   }
 
   .surface {
-    padding: 12px;
+    padding: 10px;
   }
 
   .surface-title {
@@ -610,7 +659,22 @@ button {
   }
 
   .choice-grid {
-    gap: 8px;
-    margin-top: 10px;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .choice-button {
+    padding: 8px;
+  }
+
+  .choice-label {
+    font-size: 0.9rem;
+    line-height: 1.25;
+  }
+
+  .choice-index {
+    width: 26px;
+    height: 26px;
+    font-size: 0.82rem;
   }
 }

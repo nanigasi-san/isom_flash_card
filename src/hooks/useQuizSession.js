@@ -9,7 +9,6 @@ export function useQuizSession() {
   const [questionCount, setQuestionCount] = useState(DEFAULT_QUESTION_COUNT);
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedChoice, setSelectedChoice] = useState(null);
   const [score, setScore] = useState(0);
   const [sessionError, setSessionError] = useState("");
 
@@ -25,33 +24,31 @@ export function useQuizSession() {
 
       setQuestions(nextQuestions);
       setCurrentIndex(0);
-      setSelectedChoice(null);
       setScore(0);
       setSessionError("");
       setPhase("question");
     } catch {
       setQuestions([]);
       setCurrentIndex(0);
-      setSelectedChoice(null);
       setScore(0);
       setSessionError(SESSION_ERROR_MESSAGE);
       setPhase("setup");
     }
   }
 
-  function submitAnswer() {
+  function answerChoice(choice) {
     const current = questions[currentIndex];
 
-    if (!current || !selectedChoice) {
+    if (!current) {
       return;
     }
 
-    const isCorrect = selectedChoice === current.item.japaneseName;
+    const isCorrect = choice === current.item.japaneseName;
     const nextQuestions = questions.slice();
 
     nextQuestions[currentIndex] = {
       ...current,
-      selectedChoice,
+      selectedChoice: choice,
       isCorrect,
     };
 
@@ -71,7 +68,6 @@ export function useQuizSession() {
     }
 
     setCurrentIndex((index) => index + 1);
-    setSelectedChoice(null);
     setPhase("question");
   }
 
@@ -82,7 +78,6 @@ export function useQuizSession() {
   function resetSession() {
     setQuestions([]);
     setCurrentIndex(0);
-    setSelectedChoice(null);
     setScore(0);
     setSessionError("");
     setPhase("setup");
@@ -94,13 +89,11 @@ export function useQuizSession() {
     questions,
     currentIndex,
     currentQuestion,
-    selectedChoice,
     score,
     sessionError,
     setQuestionCount,
-    setSelectedChoice,
     startSession,
-    submitAnswer,
+    answerChoice,
     moveToNext,
     replaySession,
     resetSession,

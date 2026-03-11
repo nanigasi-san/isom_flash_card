@@ -8,13 +8,11 @@ export default function App() {
     questions,
     currentIndex,
     currentQuestion,
-    selectedChoice,
     score,
     sessionError,
     setQuestionCount,
-    setSelectedChoice,
     startSession,
-    submitAnswer,
+    answerChoice,
     moveToNext,
     replaySession,
     resetSession,
@@ -39,9 +37,7 @@ export default function App() {
               currentIndex={currentIndex}
               totalQuestions={questions.length}
               score={score}
-              selectedChoice={selectedChoice}
-              onSelectChoice={setSelectedChoice}
-              onSubmit={submitAnswer}
+              onChooseChoice={answerChoice}
             />
           ) : null}
 

@@ -10,9 +10,7 @@ export function SetupScreen({ questionCount, sessionError, onSelectCount, onStar
   return (
     <div className="screen screen-two-column">
       <Surface eyebrow="Setup" title="問題数を選ぶ" bodyClassName="stack">
-        <p className="support-copy">
-          開始後は1問ずつ、スクロールなしで解けます。
-        </p>
+        <p className="support-copy">開始後はスクロールなしで 1 問ずつ解けます。</p>
         {sessionError ? <p className="error-copy">{sessionError}</p> : null}
         <div className="count-grid">
           {QUESTION_COUNT_OPTIONS.map((count) => (
@@ -37,15 +35,15 @@ export function SetupScreen({ questionCount, sessionError, onSelectCount, onStar
         <div className="rule-card-list">
           <div className="rule-card">
             <strong>1</strong>
-            <span>ISOM番号を見る</span>
+            <span>ISOM 番号を見る</span>
           </div>
           <div className="rule-card">
             <strong>2</strong>
-            <span>日本語名を6択から選ぶ</span>
+            <span>日本語名を 6 択から選ぶ</span>
           </div>
           <div className="rule-card">
             <strong>3</strong>
-            <span>番号、名前、画像で確認する</span>
+            <span>選択した瞬間に答え合わせ</span>
           </div>
         </div>
 
@@ -59,15 +57,7 @@ export function SetupScreen({ questionCount, sessionError, onSelectCount, onStar
   );
 }
 
-export function QuestionScreen({
-  question,
-  currentIndex,
-  totalQuestions,
-  score,
-  selectedChoice,
-  onSelectChoice,
-  onSubmit,
-}) {
+export function QuestionScreen({ question, currentIndex, totalQuestions, score, onChooseChoice }) {
   const progress = totalQuestions > 0 ? ((currentIndex + 1) / totalQuestions) * 100 : 0;
   const number = question?.item?.number || "-";
 
@@ -98,8 +88,8 @@ export function QuestionScreen({
             <button
               key={option}
               type="button"
-              className={`choice-button ${selectedChoice === option ? "is-selected" : ""}`.trim()}
-              onClick={() => onSelectChoice(option)}
+              className="choice-button"
+              onClick={() => onChooseChoice(option)}
             >
               <span className="choice-label">{option || "名称不明"}</span>
               <span className="choice-index">{index + 1}</span>
@@ -107,15 +97,6 @@ export function QuestionScreen({
           ))}
         </Surface>
       </div>
-
-      <Surface eyebrow="Submit" title="選択を確定" bodyClassName="submit-row">
-        <p className="submit-note">
-          {selectedChoice ? `選択中: ${selectedChoice}` : "まだ選択されていません。"}
-        </p>
-        <button type="button" className="primary-button" disabled={!selectedChoice} onClick={onSubmit}>
-          答え合わせ
-        </button>
-      </Surface>
     </div>
   );
 }
@@ -123,23 +104,24 @@ export function QuestionScreen({
 export function FeedbackScreen({ question, isLastQuestion, onNext }) {
   const label = getQuestionLabel(question);
   const selected = question?.selectedChoice || "未回答";
+  const judgeClassName = question.isCorrect ? "is-correct" : "is-incorrect";
 
   return (
     <div className="screen screen-two-column">
       <Surface eyebrow="Feedback" title="答え合わせ" bodyClassName="stack feedback-body">
-        <span className={`result-badge ${question.isCorrect ? "is-correct" : "is-incorrect"}`}>
-          {question.isCorrect ? "正解" : "不正解"}
-        </span>
-        <div className="answer-matrix">
+        <div className={`judge-banner ${judgeClassName}`}>
+          <p className={`judge-main ${judgeClassName}`}>{question.isCorrect ? "正解！" : "不正解！"}</p>
+          <p className="judge-sub">
+            {question.isCorrect
+              ? "その調子です。次の問題へ進みましょう。"
+              : "正解名を確認して次に進みましょう。"}
+          </p>
+        </div>
+        <div className={`answer-matrix ${judgeClassName}`}>
           <AnswerCard label="番号" value={question.item.number} />
           <AnswerCard label="あなたの解答" value={selected} />
           <AnswerCard label="正解" value={label} className="answer-card-wide" />
         </div>
-        <p className="support-copy">
-          {question.isCorrect
-            ? "正解です。画像もあわせて確認して次へ進みます。"
-            : "不正解です。正しい名称と画像を確認してから次へ進みます。"}
-        </p>
         <button type="button" className="primary-button" onClick={onNext}>
           {isLastQuestion ? "結果を見る" : "次の問題へ"}
         </button>
@@ -170,9 +152,7 @@ export function ResultScreen({ score, totalQuestions, questionCount, onReplay, o
       </Surface>
 
       <Surface eyebrow="Next" title="続ける" bodyClassName="stack">
-        <p className="support-copy">
-          同じ問題数でもう一度解くか、設定画面に戻って問題数を変えられます。
-        </p>
+        <p className="support-copy">同じ問題数でもう一度解くか、設定画面で問題数を変更できます。</p>
         <button type="button" className="primary-button" onClick={onReplay}>
           もう一度 {questionCount}問
         </button>
