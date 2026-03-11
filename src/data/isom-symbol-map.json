@@ -1,0 +1,454 @@
+{
+  "101": {
+    "japaneseName": "等高線（主曲線）",
+    "englishName": "Contour"
+  },
+  "102": {
+    "japaneseName": "計曲線",
+    "englishName": "Index contour"
+  },
+  "103": {
+    "japaneseName": "補助曲線",
+    "englishName": "Form line"
+  },
+  "104": {
+    "japaneseName": "土がけ",
+    "englishName": "Earth bank"
+  },
+  "105.1": {
+    "japaneseName": "土塁",
+    "englishName": "Earth wall"
+  },
+  "105.2": {
+    "japaneseName": "擁壁状土塁",
+    "englishName": "Retaining earth wall"
+  },
+  "106": {
+    "japaneseName": "崩れた土塁",
+    "englishName": "Ruined earth wall"
+  },
+  "107": {
+    "japaneseName": "きれつ",
+    "englishName": "Erosion gully"
+  },
+  "108": {
+    "japaneseName": "小さなきれつ",
+    "englishName": "Small erosion gully"
+  },
+  "109": {
+    "japaneseName": "ちいさなこぶ",
+    "englishName": "Small knoll"
+  },
+  "110": {
+    "japaneseName": "小さく細長いこぶ",
+    "englishName": "Small elongated knoll"
+  },
+  "111": {
+    "japaneseName": "小凹地",
+    "englishName": "Small depression"
+  },
+  "112": {
+    "japaneseName": "穴",
+    "englishName": "Pit"
+  },
+  "113": {
+    "japaneseName": "凹凸地",
+    "englishName": "Broken ground"
+  },
+  "114": {
+    "japaneseName": "走りにくい凹凸地",
+    "englishName": "Very broken ground"
+  },
+  "115": {
+    "japaneseName": "目立つ地形上の特徴物",
+    "englishName": "Prominent landform feature"
+  },
+  "201": {
+    "japaneseName": "通行不能ながけ",
+    "englishName": "Impassable cliff"
+  },
+  "202": {
+    "japaneseName": "岩がけ",
+    "englishName": "Cliff"
+  },
+  "203.1": {
+    "japaneseName": "岩穴・横穴",
+    "englishName": "Rocky pit or cave"
+  },
+  "203.2": {
+    "japaneseName": "危険な穴",
+    "englishName": "Dangerous pit"
+  },
+  "204": {
+    "japaneseName": "岩",
+    "englishName": "Boulder"
+  },
+  "205": {
+    "japaneseName": "大きな岩",
+    "englishName": "Large boulder"
+  },
+  "206": {
+    "japaneseName": "巨大な岩・ロックピラー",
+    "englishName": "Gigantic boulder or rock pillar"
+  },
+  "207": {
+    "japaneseName": "岩石群",
+    "englishName": "Boulder cluster"
+  },
+  "208": {
+    "japaneseName": "岩石地",
+    "englishName": "Boulder field"
+  },
+  "209": {
+    "japaneseName": "密な岩石地",
+    "englishName": "Dense boulder field"
+  },
+  "210": {
+    "japaneseName": "れき地（速度低下）",
+    "englishName": "Stony ground, slow running"
+  },
+  "211": {
+    "japaneseName": "れき地（走行困難）",
+    "englishName": "Stony ground, walk"
+  },
+  "212": {
+    "japaneseName": "れき地（通行困難）",
+    "englishName": "Stony ground, fight"
+  },
+  "213": {
+    "japaneseName": "砂地",
+    "englishName": "Sandy ground"
+  },
+  "214": {
+    "japaneseName": "露岩",
+    "englishName": "Bare rock"
+  },
+  "215": {
+    "japaneseName": "トレンチ",
+    "englishName": "Trench"
+  },
+  "301": {
+    "japaneseName": "渡れない水域",
+    "englishName": "Uncrossable body of water"
+  },
+  "302": {
+    "japaneseName": "浅い水域",
+    "englishName": "Shallow body of water"
+  },
+  "303": {
+    "japaneseName": "小さな池",
+    "englishName": "Waterhole"
+  },
+  "304": {
+    "japaneseName": "渡れる水路",
+    "englishName": "Crossable watercourse"
+  },
+  "305": {
+    "japaneseName": "渡れる小さな水路",
+    "englishName": "Small crossable watercourse"
+  },
+  "306": {
+    "japaneseName": "細いもしくは季節的水路",
+    "englishName": "Minor/seasonal water channel"
+  },
+  "307": {
+    "japaneseName": "渡れない湿地",
+    "englishName": "Uncrossable marsh"
+  },
+  "308": {
+    "japaneseName": "湿地",
+    "englishName": "Marsh"
+  },
+  "309": {
+    "japaneseName": "細い湿地",
+    "englishName": "Narrow marsh"
+  },
+  "310": {
+    "japaneseName": "不明瞭な湿地",
+    "englishName": "Indistinct marsh"
+  },
+  "311": {
+    "japaneseName": "井戸、噴水、水槽",
+    "englishName": "Well, fountain or water tank"
+  },
+  "312": {
+    "japaneseName": "湧水点",
+    "englishName": "Spring"
+  },
+  "313": {
+    "japaneseName": "目立つ水系の特徴物",
+    "englishName": "Prominent water feature"
+  },
+  "401": {
+    "japaneseName": "開けた土地",
+    "englishName": "Open land"
+  },
+  "402": {
+    "japaneseName": "まばらに木の生えた開けた土地",
+    "englishName": "Open land with scattered trees"
+  },
+  "403": {
+    "japaneseName": "開けた荒地",
+    "englishName": "Rough open land"
+  },
+  "404": {
+    "japaneseName": "まばらに木の生えた開けた荒地",
+    "englishName": "Rough open land with scattered trees"
+  },
+  "405": {
+    "japaneseName": "森",
+    "englishName": "Forest"
+  },
+  "406": {
+    "japaneseName": "植生（速度低下）",
+    "englishName": "Vegetation, slow running"
+  },
+  "407": {
+    "japaneseName": "植生（速度低下、見通し良好）",
+    "englishName": "Vegetation, slow running, good visibility"
+  },
+  "408": {
+    "japaneseName": "植生（走行困難）",
+    "englishName": "Vegetation, walk"
+  },
+  "409": {
+    "japaneseName": "植生（走行困難、見通し良好）",
+    "englishName": "Vegetation, walk, good visibility"
+  },
+  "410": {
+    "japaneseName": "植生（通行困難）",
+    "englishName": "Vegetation, fight"
+  },
+  "412": {
+    "japaneseName": "耕作地",
+    "englishName": "Cultivated land"
+  },
+  "413": {
+    "japaneseName": "果樹園",
+    "englishName": "Orchard"
+  },
+  "414": {
+    "japaneseName": "ブドウ園またはそれに類似するもの",
+    "englishName": "Vineyard or similar"
+  },
+  "415": {
+    "japaneseName": "明確な耕作地の境界",
+    "englishName": "Distinct cultivation boundary"
+  },
+  "416": {
+    "japaneseName": "明確な植生界",
+    "englishName": "Distinct vegetation boundary"
+  },
+  "417": {
+    "japaneseName": "目立つ大きな木",
+    "englishName": "Prominent large tree"
+  },
+  "418": {
+    "japaneseName": "目立つ木または藪",
+    "englishName": "Prominent bush or tree"
+  },
+  "419": {
+    "japaneseName": "目立つ植生特徴物",
+    "englishName": "Prominent vegetation feature"
+  },
+  "501": {
+    "japaneseName": "舗装区域",
+    "englishName": "Paved area"
+  },
+  "502": {
+    "japaneseName": "広い道路",
+    "englishName": "Wide road"
+  },
+  "503": {
+    "japaneseName": "道路",
+    "englishName": "Road"
+  },
+  "504": {
+    "japaneseName": "軽車道",
+    "englishName": "Vehicle track"
+  },
+  "505": {
+    "japaneseName": "徒歩道",
+    "englishName": "Footpath"
+  },
+  "506": {
+    "japaneseName": "小径",
+    "englishName": "Small footpath"
+  },
+  "507": {
+    "japaneseName": "不明瞭な小径",
+    "englishName": "Less distinct small footpath"
+  },
+  "508": {
+    "japaneseName": "狭い切り開きまたは地表に残る線状の痕跡",
+    "englishName": "Narrow ride or linear trace through the terrain"
+  },
+  "509": {
+    "japaneseName": "線路",
+    "englishName": "Railway"
+  },
+  "510": {
+    "japaneseName": "送電線、空中ケーブル、スキーリフト",
+    "englishName": "Power line, cableway or skilift"
+  },
+  "511": {
+    "japaneseName": "送電線幹線",
+    "englishName": "Major power line"
+  },
+  "512": {
+    "japaneseName": "橋/トンネル",
+    "englishName": "Bridge / tunnel"
+  },
+  "513.1": {
+    "japaneseName": "壁",
+    "englishName": "Wall"
+  },
+  "513.2": {
+    "japaneseName": "擁壁",
+    "englishName": "Retaining wall"
+  },
+  "514": {
+    "japaneseName": "崩れた壁",
+    "englishName": "Ruined wall"
+  },
+  "515": {
+    "japaneseName": "通行不能の壁",
+    "englishName": "Impassable wall"
+  },
+  "516": {
+    "japaneseName": "柵",
+    "englishName": "Fence"
+  },
+  "517": {
+    "japaneseName": "崩れた柵",
+    "englishName": "Ruined fence"
+  },
+  "518": {
+    "japaneseName": "通行不能の柵",
+    "englishName": "Impassable fence"
+  },
+  "519": {
+    "japaneseName": "横断点",
+    "englishName": "Crossing point"
+  },
+  "520": {
+    "japaneseName": "立入禁止区域",
+    "englishName": "Area that shall not be entered"
+  },
+  "521": {
+    "japaneseName": "建物",
+    "englishName": "Building"
+  },
+  "522": {
+    "japaneseName": "天蓋",
+    "englishName": "Canopy"
+  },
+  "523": {
+    "japaneseName": "廃墟",
+    "englishName": "Ruin"
+  },
+  "524": {
+    "japaneseName": "高い塔",
+    "englishName": "High tower"
+  },
+  "525": {
+    "japaneseName": "小さな塔",
+    "englishName": "Small tower"
+  },
+  "526": {
+    "japaneseName": "ケルン",
+    "englishName": "Cairn"
+  },
+  "527": {
+    "japaneseName": "給餌台",
+    "englishName": "Fodder rack"
+  },
+  "528": {
+    "japaneseName": "目立つ線状特徴物",
+    "englishName": "Prominent line feature"
+  },
+  "529": {
+    "japaneseName": "通行不能な目立つ線状特徴物",
+    "englishName": "Prominent impassable line feature"
+  },
+  "530": {
+    "japaneseName": "目立つ人工特徴物（○）",
+    "englishName": "Prominent man-made feature - ring"
+  },
+  "531": {
+    "japaneseName": "目立つ人工特徴物（×）",
+    "englishName": "Prominent man-made feature - x"
+  },
+  "532": {
+    "japaneseName": "階段",
+    "englishName": "Stairway"
+  },
+  "601": {
+    "japaneseName": "磁北線",
+    "englishName": "Magnetic north line"
+  },
+  "602": {
+    "japaneseName": "トンボ",
+    "englishName": "Registration mark"
+  },
+  "603": {
+    "japaneseName": "標高点",
+    "englishName": "Spot height"
+  },
+  "701": {
+    "japaneseName": "スタート",
+    "englishName": "Start"
+  },
+  "702": {
+    "japaneseName": "地図配布場所",
+    "englishName": "Map issue point"
+  },
+  "703": {
+    "japaneseName": "コントロール位置",
+    "englishName": "Control point"
+  },
+  "704": {
+    "japaneseName": "コントロール番号",
+    "englishName": "Control number"
+  },
+  "705": {
+    "japaneseName": "結合線",
+    "englishName": "Course line"
+  },
+  "706": {
+    "japaneseName": "フィニッシュ",
+    "englishName": "Finish"
+  },
+  "707": {
+    "japaneseName": "誘導区間",
+    "englishName": "Marked route"
+  },
+  "708": {
+    "japaneseName": "立入禁止の境界",
+    "englishName": "Out-of-bounds boundary"
+  },
+  "709": {
+    "japaneseName": "立入禁止区域",
+    "englishName": "Out-of-bounds area"
+  },
+  "710": {
+    "japaneseName": "通過点",
+    "englishName": "Crossing point"
+  },
+  "711": {
+    "japaneseName": "通行禁止のルート",
+    "englishName": "Out-of-bounds route"
+  },
+  "712": {
+    "japaneseName": "救護所",
+    "englishName": "First aid post"
+  },
+  "713": {
+    "japaneseName": "給水所",
+    "englishName": "Refreshment point"
+  },
+  "715": {
+    "japaneseName": "地図交換後の継続点",
+    "englishName": "Continuing point after map exchange"
+  }
+}
