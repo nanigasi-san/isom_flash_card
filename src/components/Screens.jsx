@@ -104,26 +104,29 @@ export function SetupScreen({
 export function QuestionScreen({ question, currentIndex, totalQuestions, score, onChooseChoice }) {
   const progress = totalQuestions > 0 ? ((currentIndex + 1) / totalQuestions) * 100 : 0;
   const number = question?.item?.number || "-";
+  const questionLabel = `\u7b2c${currentIndex + 1}\u554f`;
 
   return (
     <div className="screen screen-question">
-      <Surface eyebrow="Question" title="番号に対応する日本語名を選ぶ" bodyClassName="stack">
-        <div className="progress-meta">
-          <MetaPill>
-            第{currentIndex + 1}問 / {totalQuestions}
-          </MetaPill>
-          <MetaPill>正解 {score}</MetaPill>
-        </div>
+      <Surface
+        eyebrow="Question"
+        title={
+          <span className="question-header">
+            <span className="question-header-label">{questionLabel}</span>
+            <MetaPill>{"\u6b63\u89e3"} {score}</MetaPill>
+          </span>
+        }
+        bodyClassName="stack"
+      >
         <div className="progress-track">
           <div className="progress-bar" style={{ width: `${progress}%` }} />
         </div>
       </Surface>
 
       <div className="question-layout">
-        <Surface eyebrow="ISOM Number" title={number} bodyClassName="stack number-body">
+        <Surface eyebrow="ISOM Number" bodyClassName="number-body">
           <div className="number-panel">
             <span className="number-value">{number}</span>
-            <p className="number-copy">この番号に対応する日本語名を選んでください。</p>
           </div>
         </Surface>
 

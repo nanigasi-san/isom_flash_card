@@ -261,6 +261,10 @@ button {
   gap: 8px;
 }
 
+.screen-question > .surface:first-child .progress-track {
+  margin-top: 0;
+}
+
 .feedback-surface {
   height: 100%;
   border-color: rgba(22, 33, 25, 0.2);
@@ -595,11 +599,18 @@ button {
   font-size: 1.4rem;
 }
 
-.progress-meta {
+.question-header {
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.question-header-label {
+  font-family: "Space Grotesk", "Noto Sans JP", sans-serif;
+  font-size: clamp(1.02rem, 1.8vw, 1.22rem);
+  font-weight: 700;
 }
 
 .progress-track {
@@ -879,9 +890,8 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .progress-meta {
-    flex-direction: column;
-    align-items: stretch;
+  .question-header {
+    flex-wrap: wrap;
   }
 
   .answer-card-wide {
