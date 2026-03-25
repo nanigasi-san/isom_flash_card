@@ -12,26 +12,24 @@ export function ResultScreen({
   onReplay,
   onReset,
 }) {
-  const accuracy = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
   const challengeLabel =
     HUNDREDS_OPTIONS.find((option) => option.value === selectedHundreds)?.label || `${selectedHundreds}番台`;
   const replayLabel =
     mode === "challenge" ? `もう一度 ${challengeLabel}` : `もう一度 ${questionCount}問`;
+  const accuracy = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
   const formattedAnswerTime = formatElapsedTime(totalAnswerTimeMs);
+  const formattedAverageAnswerTime = formatElapsedTime(
+    totalQuestions > 0 ? Math.round(totalAnswerTimeMs / totalQuestions) : 0
+  );
 
   return (
     <div className="screen screen-two-column">
       <Surface eyebrow="Result" title="今回の結果" bodyClassName="stack result-body">
-        <div className="result-score">{score}/{totalQuestions}問正解</div>
-        <p className="result-accuracy">正答率 {accuracy}%</p>
-        <p className="result-accuracy">解答時間 {formattedAnswerTime}</p>
-        <div className="mini-summary">
-          <SummaryCard label="正解" value={score} />
-          <SummaryCard label="不正解" value={totalQuestions - score} />
-          <SummaryCard label="解答時間" value={formattedAnswerTime} />
+        <div className="result-summary-grid">
+          <SummaryCard label="正解数/問題数" value={`${score}/${totalQuestions}問 (${accuracy}%)`} />
           <SummaryCard
-            label={mode === "challenge" ? "出題範囲" : "問題数"}
-            value={mode === "challenge" ? challengeLabel : `${questionCount}問`}
+            label="解答時間(全体/一問ごと)"
+            value={`${formattedAnswerTime} / ${formattedAverageAnswerTime}`}
           />
         </div>
       </Surface>

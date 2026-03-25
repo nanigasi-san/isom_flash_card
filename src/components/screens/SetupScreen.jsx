@@ -38,7 +38,7 @@ export function SetupScreen({
           rel="noreferrer"
         >
           <span className="reference-link-kicker">Reference</span>
-          <span className="reference-link-title">ISOM2017-2(PDF/日本語)</span>
+          <span className="reference-link-title">参考リンク</span>
           <span className="reference-link-arrow" aria-hidden="true">↗</span>
         </a>
         {sessionError ? <p className="error-copy">{sessionError}</p> : null}
@@ -80,7 +80,8 @@ export function SetupScreen({
                   onClick={() => onSelectHundreds(option.value)}
                 >
                   <span className="count-value">{option.value}</span>
-                  <span className="count-label">番台 / 全{option.count}問</span>
+                  <span className="count-label">{option.section} {option.description}</span>
+                  <span className="count-meta">全{option.count}問</span>
                 </button>
               ))}
             </div>
