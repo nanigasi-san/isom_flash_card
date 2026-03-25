@@ -7,6 +7,8 @@ import {
 } from "../../lib/quizConfig";
 import { SummaryCard, Surface } from "../ui";
 
+const ISOM_REFERENCE_URL = "https://www.orienteering.or.jp/archive/rule/isom2017-2.pdf";
+
 export function SetupScreen({
   questionCount,
   mode,
@@ -30,6 +32,16 @@ export function SetupScreen({
     <div className="screen screen-two-column">
       <Surface eyebrow="Setup" title="出題条件を選ぶ" bodyClassName="stack">
         <p className="support-copy">開始後はスクロールなしで 1 問ずつ解けます。</p>
+        <a
+          className="reference-link-card"
+          href={ISOM_REFERENCE_URL}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span className="reference-link-kicker">Reference</span>
+          <span className="reference-link-title">ISOM2017-2(PDF/日本語)</span>
+          <span className="reference-link-arrow" aria-hidden="true">↗</span>
+        </a>
         {sessionError ? <p className="error-copy">{sessionError}</p> : null}
         <div className="mode-grid">
           {QUIZ_MODE_OPTIONS.map((option) => (
