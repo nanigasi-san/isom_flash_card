@@ -1,6 +1,6 @@
 import { isomItems, uniqueJapaneseNames } from "../data/isomDataset";
 
-export const QUESTION_COUNT_OPTIONS = [5, 10, 15, 20];
+export const QUESTION_COUNT_OPTIONS = [5, 10, 30, 50];
 export const DEFAULT_QUESTION_COUNT = QUESTION_COUNT_OPTIONS[1];
 export const QUIZ_MODE_OPTIONS = [
   { value: "random", label: "ランダム" },

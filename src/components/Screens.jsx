@@ -25,6 +25,19 @@ function findItemByJapaneseName(name) {
   return matchedItems[0];
 }
 
+function formatElapsedTime(totalMs) {
+  const safeMs = Math.max(0, totalMs);
+  const totalSeconds = Math.floor(safeMs / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  if (minutes === 0) {
+    return `${seconds}秒`;
+  }
+
+  return `${minutes}分${seconds.toString().padStart(2, "0")}秒`;
+}
+
 export function SetupScreen({
   questionCount,
   mode,
@@ -286,21 +299,33 @@ export function FeedbackScreen({ question, isLastQuestion, onNext }) {
   );
 }
 
-export function ResultScreen({ score, totalQuestions, mode, questionCount, selectedHundreds, onReplay, onReset }) {
+export function ResultScreen({
+  score,
+  totalQuestions,
+  mode,
+  questionCount,
+  selectedHundreds,
+  totalAnswerTimeMs,
+  onReplay,
+  onReset,
+}) {
   const accuracy = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
   const challengeLabel =
     HUNDREDS_OPTIONS.find((option) => option.value === selectedHundreds)?.label || `${selectedHundreds}番台`;
   const replayLabel =
     mode === "challenge" ? `もう一度 ${challengeLabel}` : `もう一度 ${questionCount}問`;
+  const formattedAnswerTime = formatElapsedTime(totalAnswerTimeMs);
 
   return (
     <div className="screen screen-two-column">
       <Surface eyebrow="Result" title="今回の結果" bodyClassName="stack result-body">
         <div className="result-score">{score}/{totalQuestions}問正解</div>
         <p className="result-accuracy">正答率 {accuracy}%</p>
+        <p className="result-accuracy">解答時間 {formattedAnswerTime}</p>
         <div className="mini-summary">
           <SummaryCard label="正解" value={score} />
           <SummaryCard label="不正解" value={totalQuestions - score} />
+          <SummaryCard label="解答時間" value={formattedAnswerTime} />
           <SummaryCard
             label={mode === "challenge" ? "出題範囲" : "問題数"}
             value={mode === "challenge" ? challengeLabel : `${questionCount}問`}

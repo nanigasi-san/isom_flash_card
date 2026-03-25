@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   createQuestions,
   DEFAULT_CHALLENGE_HUNDREDS,
@@ -19,7 +19,9 @@ export function useQuizSession() {
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [totalAnswerTimeMs, setTotalAnswerTimeMs] = useState(0);
   const [sessionError, setSessionError] = useState("");
+  const questionStartedAtRef = useRef(0);
 
   const currentQuestion = questions[currentIndex] ?? null;
 
@@ -39,13 +41,17 @@ export function useQuizSession() {
       setQuestions(nextQuestions);
       setCurrentIndex(0);
       setScore(0);
+      setTotalAnswerTimeMs(0);
       setSessionError("");
+      questionStartedAtRef.current = performance.now();
       setPhase("question");
     } catch {
       setQuestions([]);
       setCurrentIndex(0);
       setScore(0);
+      setTotalAnswerTimeMs(0);
       setSessionError(SESSION_ERROR_MESSAGE);
+      questionStartedAtRef.current = 0;
       setPhase("setup");
     }
   }
@@ -57,6 +63,9 @@ export function useQuizSession() {
       return;
     }
 
+    const answeredAt = performance.now();
+    const elapsedMs =
+      questionStartedAtRef.current > 0 ? Math.max(0, answeredAt - questionStartedAtRef.current) : 0;
     const isCorrect = choice === current.item.japaneseName;
     const nextQuestions = questions.slice();
 
@@ -67,6 +76,7 @@ export function useQuizSession() {
     };
 
     setQuestions(nextQuestions);
+    setTotalAnswerTimeMs((currentTotal) => currentTotal + elapsedMs);
 
     if (isCorrect) {
       setScore((currentScore) => currentScore + 1);
@@ -81,6 +91,7 @@ export function useQuizSession() {
       return;
     }
 
+    questionStartedAtRef.current = performance.now();
     setCurrentIndex((index) => index + 1);
     setPhase("question");
   }
@@ -93,7 +104,9 @@ export function useQuizSession() {
     setQuestions([]);
     setCurrentIndex(0);
     setScore(0);
+    setTotalAnswerTimeMs(0);
     setSessionError("");
+    questionStartedAtRef.current = 0;
     setPhase("setup");
   }
 
@@ -107,6 +120,7 @@ export function useQuizSession() {
     currentIndex,
     currentQuestion,
     score,
+    totalAnswerTimeMs,
     sessionError,
     setQuestionCount,
     setMode,

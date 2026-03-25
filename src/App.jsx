@@ -12,6 +12,7 @@ export default function App() {
     currentIndex,
     currentQuestion,
     score,
+    totalAnswerTimeMs,
     sessionError,
     setQuestionCount,
     setMode,
@@ -73,6 +74,7 @@ export default function App() {
               mode={mode}
               questionCount={questionCount}
               selectedHundreds={selectedHundreds}
+              totalAnswerTimeMs={totalAnswerTimeMs}
               onReplay={replaySession}
               onReset={resetSession}
             />
