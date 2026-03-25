@@ -1,88 +1,176 @@
-import { useState } from "react";
+import { useReducer, useRef } from "react";
 import {
   createQuestions,
   DEFAULT_CHALLENGE_HUNDREDS,
+} from "../lib/quiz";
+import {
   DEFAULT_QUESTION_COUNT,
   DEFAULT_QUIZ_DIFFICULTY,
   DEFAULT_QUIZ_MODE,
-} from "../lib/quiz";
+  QUIZ_PHASES,
+} from "../lib/quizConfig";
 
 const SESSION_ERROR_MESSAGE =
   "問題の生成に失敗しました。ページを再読み込みして、もう一度試してください。";
 
-export function useQuizSession() {
-  const [phase, setPhase] = useState("setup");
-  const [questionCount, setQuestionCount] = useState(DEFAULT_QUESTION_COUNT);
-  const [mode, setMode] = useState(DEFAULT_QUIZ_MODE);
-  const [difficulty, setDifficulty] = useState(DEFAULT_QUIZ_DIFFICULTY);
-  const [selectedHundreds, setSelectedHundreds] = useState(DEFAULT_CHALLENGE_HUNDREDS);
-  const [questions, setQuestions] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [sessionError, setSessionError] = useState("");
+const SESSION_ACTIONS = {
+  UPDATE_SETTINGS: "update_settings",
+  START_SESSION_SUCCESS: "start_session_success",
+  START_SESSION_FAILURE: "start_session_failure",
+  ANSWER_QUESTION: "answer_question",
+  ADVANCE_QUESTION: "advance_question",
+  RESET_SESSION: "reset_session",
+};
 
-  const currentQuestion = questions[currentIndex] ?? null;
+function createInitialState() {
+  return {
+    phase: QUIZ_PHASES.SETUP,
+    settings: {
+      questionCount: DEFAULT_QUESTION_COUNT,
+      mode: DEFAULT_QUIZ_MODE,
+      difficulty: DEFAULT_QUIZ_DIFFICULTY,
+      selectedHundreds: DEFAULT_CHALLENGE_HUNDREDS,
+    },
+    questions: [],
+    currentIndex: 0,
+    score: 0,
+    totalAnswerTimeMs: 0,
+    sessionError: "",
+  };
+}
+
+function resetProgress(state, overrides = {}) {
+  return {
+    ...state,
+    questions: [],
+    currentIndex: 0,
+    score: 0,
+    totalAnswerTimeMs: 0,
+    sessionError: "",
+    ...overrides,
+  };
+}
+
+function sessionReducer(state, action) {
+  switch (action.type) {
+    case SESSION_ACTIONS.UPDATE_SETTINGS:
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          ...action.payload,
+        },
+      };
+    case SESSION_ACTIONS.START_SESSION_SUCCESS:
+      return {
+        ...resetProgress(state),
+        questions: action.payload.questions,
+        phase: QUIZ_PHASES.QUESTION,
+      };
+    case SESSION_ACTIONS.START_SESSION_FAILURE:
+      return resetProgress(state, {
+        phase: QUIZ_PHASES.SETUP,
+        sessionError: SESSION_ERROR_MESSAGE,
+      });
+    case SESSION_ACTIONS.ANSWER_QUESTION: {
+      const currentQuestion = state.questions[state.currentIndex];
+
+      if (!currentQuestion) {
+        return state;
+      }
+
+      const isCorrect = action.payload.choice === currentQuestion.item.japaneseName;
+      const nextQuestions = state.questions.slice();
+
+      nextQuestions[state.currentIndex] = {
+        ...currentQuestion,
+        selectedChoice: action.payload.choice,
+        isCorrect,
+      };
+
+      return {
+        ...state,
+        questions: nextQuestions,
+        score: isCorrect ? state.score + 1 : state.score,
+        totalAnswerTimeMs: state.totalAnswerTimeMs + action.payload.elapsedMs,
+        phase: QUIZ_PHASES.FEEDBACK,
+      };
+    }
+    case SESSION_ACTIONS.ADVANCE_QUESTION:
+      if (state.currentIndex >= state.questions.length - 1) {
+        return {
+          ...state,
+          phase: QUIZ_PHASES.RESULT,
+        };
+      }
+
+      return {
+        ...state,
+        currentIndex: state.currentIndex + 1,
+        phase: QUIZ_PHASES.QUESTION,
+      };
+    case SESSION_ACTIONS.RESET_SESSION:
+      return resetProgress(state, {
+        phase: QUIZ_PHASES.SETUP,
+      });
+    default:
+      return state;
+  }
+}
+
+export function useQuizSession() {
+  const [state, dispatch] = useReducer(sessionReducer, undefined, createInitialState);
+  const questionStartedAtRef = useRef(0);
+  const currentQuestion = state.questions[state.currentIndex] ?? null;
+
+  function updateSettings(patch) {
+    dispatch({
+      type: SESSION_ACTIONS.UPDATE_SETTINGS,
+      payload: patch,
+    });
+  }
 
   function startSession() {
     try {
-      const nextQuestions = createQuestions({
-        questionCount,
-        difficulty,
-        mode,
-        selectedHundreds,
-      });
+      const nextQuestions = createQuestions(state.settings);
 
       if (nextQuestions.length === 0) {
         throw new Error("No quiz questions were generated.");
       }
 
-      setQuestions(nextQuestions);
-      setCurrentIndex(0);
-      setScore(0);
-      setSessionError("");
-      setPhase("question");
+      questionStartedAtRef.current = performance.now();
+      dispatch({
+        type: SESSION_ACTIONS.START_SESSION_SUCCESS,
+        payload: { questions: nextQuestions },
+      });
     } catch {
-      setQuestions([]);
-      setCurrentIndex(0);
-      setScore(0);
-      setSessionError(SESSION_ERROR_MESSAGE);
-      setPhase("setup");
+      questionStartedAtRef.current = 0;
+      dispatch({ type: SESSION_ACTIONS.START_SESSION_FAILURE });
     }
   }
 
   function answerChoice(choice) {
-    const current = questions[currentIndex];
-
-    if (!current) {
+    if (!currentQuestion) {
       return;
     }
 
-    const isCorrect = choice === current.item.japaneseName;
-    const nextQuestions = questions.slice();
+    const answeredAt = performance.now();
+    const elapsedMs =
+      questionStartedAtRef.current > 0 ? Math.max(0, answeredAt - questionStartedAtRef.current) : 0;
 
-    nextQuestions[currentIndex] = {
-      ...current,
-      selectedChoice: choice,
-      isCorrect,
-    };
-
-    setQuestions(nextQuestions);
-
-    if (isCorrect) {
-      setScore((currentScore) => currentScore + 1);
-    }
-
-    setPhase("feedback");
+    dispatch({
+      type: SESSION_ACTIONS.ANSWER_QUESTION,
+      payload: {
+        choice,
+        elapsedMs,
+      },
+    });
   }
 
   function moveToNext() {
-    if (currentIndex >= questions.length - 1) {
-      setPhase("result");
-      return;
-    }
-
-    setCurrentIndex((index) => index + 1);
-    setPhase("question");
+    questionStartedAtRef.current =
+      state.currentIndex >= state.questions.length - 1 ? 0 : performance.now();
+    dispatch({ type: SESSION_ACTIONS.ADVANCE_QUESTION });
   }
 
   function replaySession() {
@@ -90,28 +178,26 @@ export function useQuizSession() {
   }
 
   function resetSession() {
-    setQuestions([]);
-    setCurrentIndex(0);
-    setScore(0);
-    setSessionError("");
-    setPhase("setup");
+    questionStartedAtRef.current = 0;
+    dispatch({ type: SESSION_ACTIONS.RESET_SESSION });
   }
 
   return {
-    phase,
-    questionCount,
-    mode,
-    difficulty,
-    selectedHundreds,
-    questions,
-    currentIndex,
+    phase: state.phase,
+    questionCount: state.settings.questionCount,
+    mode: state.settings.mode,
+    difficulty: state.settings.difficulty,
+    selectedHundreds: state.settings.selectedHundreds,
+    questions: state.questions,
+    currentIndex: state.currentIndex,
     currentQuestion,
-    score,
-    sessionError,
-    setQuestionCount,
-    setMode,
-    setDifficulty,
-    setSelectedHundreds,
+    score: state.score,
+    totalAnswerTimeMs: state.totalAnswerTimeMs,
+    sessionError: state.sessionError,
+    setQuestionCount: (questionCount) => updateSettings({ questionCount }),
+    setMode: (mode) => updateSettings({ mode }),
+    setDifficulty: (difficulty) => updateSettings({ difficulty }),
+    setSelectedHundreds: (selectedHundreds) => updateSettings({ selectedHundreds }),
     startSession,
     answerChoice,
     moveToNext,
