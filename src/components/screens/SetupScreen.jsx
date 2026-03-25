@@ -160,7 +160,7 @@ export function SetupScreen({
             <strong>2</strong>
             <span>
               {isChallengeMode
-                ? "選択肢もその100番台だけ。全記号を1回ずつ出題"
+                ? "各問題は同じ100番台から最大6択。指定した100番台を1回ずつ出題"
                 : "普通: 全体6択 / 難しい: 同100番台（600番台は3択）"}
             </span>
           </div>

@@ -25,7 +25,9 @@ export function FeedbackScreen({ question, isLastQuestion, onNext }) {
             <div className="feedback-image-row feedback-image-row-single">
               <div className="feedback-image-box">
                 {correctItem?.svgPath ? (
-                  <img src={correctItem.svgPath} alt={`${correctItem.number} ${correctLabel}`} />
+                  <div className="feedback-image-frame">
+                    <img src={correctItem.svgPath} alt={`${correctItem.number} ${correctLabel}`} />
+                  </div>
                 ) : (
                   <span>画像なし</span>
                 )}
@@ -49,14 +51,18 @@ export function FeedbackScreen({ question, isLastQuestion, onNext }) {
             <div className="feedback-image-row">
               <div className="feedback-image-box">
                 {selectedItem?.svgPath ? (
-                  <img src={selectedItem.svgPath} alt={`${selectedNumber} ${selectedLabel}`} />
+                  <div className="feedback-image-frame">
+                    <img src={selectedItem.svgPath} alt={`${selectedNumber} ${selectedLabel}`} />
+                  </div>
                 ) : (
                   <span>画像なし</span>
                 )}
               </div>
               <div className="feedback-image-box">
                 {correctItem?.svgPath ? (
-                  <img src={correctItem.svgPath} alt={`${correctItem.number} ${correctLabel}`} />
+                  <div className="feedback-image-frame">
+                    <img src={correctItem.svgPath} alt={`${correctItem.number} ${correctLabel}`} />
+                  </div>
                 ) : (
                   <span>画像なし</span>
                 )}

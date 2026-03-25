@@ -88,13 +88,7 @@ function buildHardOptions(item) {
 }
 
 function buildChallengeOptions(item) {
-  const categoryNames = getJapaneseNamesByHundreds(getCategoryByHundreds(item.number));
-
-  if (!categoryNames.includes(item.japaneseName)) {
-    categoryNames.push(item.japaneseName);
-  }
-
-  return shuffle(categoryNames);
+  return buildHardOptions(item);
 }
 
 export function createQuestions({
