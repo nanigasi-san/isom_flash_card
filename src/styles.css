@@ -429,6 +429,73 @@ button {
   margin-top: 14px;
 }
 
+.setup-section {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid rgba(22, 33, 25, 0.08);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(255, 252, 246, 0.92), rgba(249, 244, 235, 0.78)),
+    var(--panel-strong);
+}
+
+.setup-section-mode {
+  border-color: rgba(35, 69, 50, 0.18);
+  background:
+    linear-gradient(135deg, rgba(35, 69, 50, 0.08), rgba(255, 252, 246, 0.96) 52%),
+    var(--panel-strong);
+}
+
+.setup-section-count {
+  border-color: rgba(196, 134, 71, 0.22);
+  background:
+    linear-gradient(135deg, rgba(196, 134, 71, 0.1), rgba(255, 252, 246, 0.96) 58%),
+    var(--panel-strong);
+}
+
+.setup-section-difficulty,
+.setup-section-scope {
+  border-color: rgba(22, 33, 25, 0.12);
+}
+
+.setup-section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.setup-section-step {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--forest);
+  color: #fff;
+  font-family: "Space Grotesk", "Noto Sans JP", sans-serif;
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+
+.setup-section-title,
+.setup-section-copy {
+  margin: 0;
+}
+
+.setup-section-title {
+  font-family: "Space Grotesk", "Noto Sans JP", sans-serif;
+  font-size: 1.02rem;
+  line-height: 1.1;
+}
+
+.setup-section-copy {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
 .count-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -465,6 +532,46 @@ button {
   transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
 }
 
+.option-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.option-card::after {
+  content: "";
+  position: absolute;
+  inset: auto -20px -24px auto;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.option-card-mode {
+  min-height: 88px;
+}
+
+.option-card-mode::after {
+  background: radial-gradient(circle, rgba(35, 69, 50, 0.18), transparent 68%);
+}
+
+.option-card-count {
+  min-height: 112px;
+}
+
+.option-card-count::after {
+  background: radial-gradient(circle, rgba(196, 134, 71, 0.2), transparent 68%);
+}
+
+.option-card-difficulty {
+  min-height: 92px;
+}
+
+.option-card-difficulty::after {
+  background: radial-gradient(circle, rgba(22, 33, 25, 0.1), transparent 68%);
+}
+
 .count-button:hover,
 .difficulty-button:hover,
 .choice-button:hover,
@@ -476,6 +583,7 @@ button {
 .count-button.is-active {
   border-color: var(--forest);
   background: linear-gradient(135deg, var(--sand-soft) 0%, var(--forest-soft) 100%);
+  box-shadow: 0 12px 28px rgba(35, 69, 50, 0.12);
 }
 
 .difficulty-button {
@@ -493,11 +601,13 @@ button {
 .difficulty-button.is-active {
   border-color: var(--forest);
   background: linear-gradient(135deg, var(--sand-soft) 0%, var(--forest-soft) 100%);
+  box-shadow: 0 12px 28px rgba(35, 69, 50, 0.12);
 }
 
 .difficulty-title {
   font-family: "Space Grotesk", "Noto Sans JP", sans-serif;
   font-weight: 700;
+  font-size: 1.02rem;
 }
 
 .difficulty-note {
@@ -514,8 +624,13 @@ button {
 
 .count-value {
   font-family: "Space Grotesk", "Noto Sans JP", sans-serif;
-  font-size: 1.8rem;
+  font-size: 2rem;
   line-height: 1;
+}
+
+.count-label {
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .selection-pill,
@@ -894,6 +1009,10 @@ button {
     border-radius: 24px;
   }
 
+  .setup-section {
+    padding: 14px;
+  }
+
   .hero {
     padding: 16px;
   }
@@ -952,6 +1071,16 @@ button {
 
   .mode-grid {
     grid-template-columns: 1fr;
+  }
+
+  .setup-section-header {
+    gap: 10px;
+  }
+
+  .setup-section-step {
+    width: 30px;
+    height: 30px;
+    font-size: 0.88rem;
   }
 
   .symbol-card img {
