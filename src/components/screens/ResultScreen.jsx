@@ -1,4 +1,5 @@
 import { HUNDREDS_OPTIONS } from "../../lib/quiz";
+import { QUIZ_DIFFICULTY_OPTIONS } from "../../lib/quizConfig";
 import { formatElapsedTime } from "../../lib/quizDisplay";
 import { SummaryCard, Surface } from "../ui";
 
@@ -6,6 +7,7 @@ export function ResultScreen({
   score,
   totalQuestions,
   mode,
+  difficulty,
   questionCount,
   selectedHundreds,
   totalAnswerTimeMs,
@@ -14,6 +16,8 @@ export function ResultScreen({
 }) {
   const challengeLabel =
     HUNDREDS_OPTIONS.find((option) => option.value === selectedHundreds)?.label || `${selectedHundreds}番台`;
+  const difficultyLabel =
+    QUIZ_DIFFICULTY_OPTIONS.find((option) => option.value === difficulty)?.label || difficulty;
   const replayLabel =
     mode === "challenge" ? `もう一度 ${challengeLabel}` : `もう一度 ${questionCount}問`;
   const accuracy = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
@@ -21,6 +25,21 @@ export function ResultScreen({
   const formattedAverageAnswerTime = formatElapsedTime(
     totalQuestions > 0 ? Math.round(totalAnswerTimeMs / totalQuestions) : 0
   );
+  const shareText = [
+    `ISOM Flash Card で ${
+      mode === "challenge"
+        ? `チャレンジ / ${challengeLabel}`
+        : `ランダム / ${questionCount}問 / ${difficultyLabel}`
+    } をプレイ`,
+    `結果: ${score}/${totalQuestions}問正解 (${accuracy}%)`,
+    `解答時間: ${formattedAnswerTime} / 1問あたり${formattedAverageAnswerTime}`,
+    window.location.origin,
+  ].join("\n");
+
+  function handleShareToX() {
+    const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+    window.open(shareUrl, "_blank", "noopener,noreferrer");
+  }
 
   return (
     <div className="screen screen-two-column">
@@ -45,6 +64,9 @@ export function ResultScreen({
         </button>
         <button type="button" className="secondary-button" onClick={onReset}>
           設定に戻る
+        </button>
+        <button type="button" className="share-button" onClick={handleShareToX}>
+          Xで共有
         </button>
       </Surface>
     </div>

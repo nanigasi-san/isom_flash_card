@@ -680,7 +680,8 @@ button {
 }
 
 .primary-button,
-.secondary-button {
+.secondary-button,
+.share-button {
   border: 0;
   border-radius: 999px;
   padding: 12px 18px;
@@ -697,6 +698,11 @@ button {
 .secondary-button {
   background: linear-gradient(135deg, var(--sand) 0%, #dda45d 100%);
   color: #fffaf3;
+}
+
+.share-button {
+  background: linear-gradient(135deg, #111 0%, #2a2a2a 100%);
+  color: #fff;
 }
 
 .primary-button:disabled {
@@ -990,7 +996,8 @@ button {
   }
 
   .primary-button,
-  .secondary-button {
+  .secondary-button,
+  .share-button {
     width: 100%;
   }
 
