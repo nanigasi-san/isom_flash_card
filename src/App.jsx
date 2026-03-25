@@ -1,3 +1,4 @@
+import Header from "./components/Header";
 import { FeedbackScreen, QuestionScreen, ResultScreen, SetupScreen } from "./components/Screens";
 import { useQuizSession } from "./hooks/useQuizSession";
 
@@ -32,6 +33,16 @@ export default function App() {
         </button>
       ) : null}
       <div className="app-grid">
+        <Header
+          phase={phase}
+          currentIndex={currentIndex}
+          questionTotal={questions.length}
+          score={score}
+          mode={mode}
+          difficulty={difficulty}
+          questionCount={questionCount}
+          selectedHundreds={selectedHundreds}
+        />
         <main className="app-main">
           {phase === "setup" ? (
             <SetupScreen

@@ -46,8 +46,10 @@ export function SetupScreen({
 
   return (
     <div className="screen screen-two-column">
-      <Surface eyebrow="Setup" title="出題条件を選ぶ" bodyClassName="stack">
-        <p className="support-copy">開始後はスクロールなしで 1 問ずつ解けます。</p>
+      <Surface eyebrow="Setup" title="出題セッションを組み立てる" bodyClassName="stack">
+        <p className="support-copy">
+          学習の仕方を先に決める構成にして、開始前の迷いを減らします。
+        </p>
         {sessionError ? <p className="error-copy">{sessionError}</p> : null}
         <div className="mode-grid">
           {QUIZ_MODE_OPTIONS.map((option) => (
@@ -134,27 +136,23 @@ export function SetupScreen({
           )}
         </div>
         <button type="button" className="primary-button" onClick={onStart}>
-          はじめる
+          セッション開始
         </button>
       </Surface>
 
-      <Surface eyebrow="Flow" title="進め方" bodyClassName="stack">
+      <Surface eyebrow="Guide" title="このUIで改善した点" bodyClassName="stack">
         <div className="rule-card-list">
           <div className="rule-card">
             <strong>1</strong>
-            <span>{isChallengeMode ? "100番台を決めて、出題範囲を固定する" : "ISOM 番号を見る"}</span>
+            <span>設定、出題、答え合わせ、結果の段階が上部ヘッダーで常に見える</span>
           </div>
           <div className="rule-card">
             <strong>2</strong>
-            <span>
-              {isChallengeMode
-                ? "選択肢もその100番台だけ。全記号を1回ずつ出題"
-                : "普通: 全体6択 / 難しい: 同100番台（600番台は3択）"}
-            </span>
+            <span>重要な操作だけを強調し、設定カードの優先順位を整理</span>
           </div>
           <div className="rule-card">
             <strong>3</strong>
-            <span>{isChallengeMode ? "最後に a/n問正解 を確認する" : "選択した瞬間に答え合わせ"}</span>
+            <span>出題中は進捗とスコアを固定表示し、判断に必要な情報だけ残す</span>
           </div>
         </div>
 
@@ -185,6 +183,10 @@ export function QuestionScreen({ question, currentIndex, totalQuestions, score, 
         }
         bodyClassName="stack"
       >
+        <div className="question-brief">
+          <p className="question-brief-title">見る情報は番号だけ</p>
+          <p className="question-brief-copy">名称を思い出してから選択肢を見ると、記号番号との結びつきが強くなります。</p>
+        </div>
         <div className="progress-track">
           <div className="progress-bar" style={{ width: `${progress}%` }} />
         </div>
@@ -193,6 +195,7 @@ export function QuestionScreen({ question, currentIndex, totalQuestions, score, 
       <div className="question-layout">
         <Surface eyebrow="ISOM Number" bodyClassName="number-body">
           <div className="number-panel">
+            <span className="number-caption">Target Number</span>
             <span className="number-value">{number}</span>
           </div>
         </Surface>
@@ -298,6 +301,9 @@ export function ResultScreen({ score, totalQuestions, mode, questionCount, selec
       <Surface eyebrow="Result" title="今回の結果" bodyClassName="stack result-body">
         <div className="result-score">{score}/{totalQuestions}問正解</div>
         <p className="result-accuracy">正答率 {accuracy}%</p>
+        <div className="result-band">
+          <span>{accuracy >= 80 ? "かなり定着しています" : accuracy >= 60 ? "あと少しで安定します" : "再周回で定着を優先"}</span>
+        </div>
         <div className="mini-summary">
           <SummaryCard label="正解" value={score} />
           <SummaryCard label="不正解" value={totalQuestions - score} />

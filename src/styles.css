@@ -1,18 +1,18 @@
 :root {
-  --bg: #f3eddf;
-  --bg-2: #e3eadf;
-  --ink: #162119;
-  --muted: #5d685f;
-  --panel: rgba(255, 252, 246, 0.94);
-  --panel-strong: rgba(255, 252, 246, 0.99);
-  --border: rgba(22, 33, 25, 0.12);
-  --forest: #234532;
-  --forest-soft: rgba(35, 69, 50, 0.11);
-  --sand: #c48647;
-  --sand-soft: rgba(196, 134, 71, 0.14);
-  --rose: #b04e4e;
-  --rose-soft: rgba(176, 78, 78, 0.13);
-  --shadow: 0 24px 80px rgba(31, 42, 31, 0.14);
+  --bg: #f6f1e6;
+  --bg-2: #dfe7d9;
+  --ink: #102018;
+  --muted: #5c6a63;
+  --panel: rgba(255, 251, 244, 0.88);
+  --panel-strong: rgba(255, 251, 244, 0.98);
+  --border: rgba(16, 32, 24, 0.12);
+  --forest: #1f4d3a;
+  --forest-soft: rgba(31, 77, 58, 0.12);
+  --sand: #cb8950;
+  --sand-soft: rgba(203, 137, 80, 0.16);
+  --rose: #b14d47;
+  --rose-soft: rgba(177, 77, 71, 0.14);
+  --shadow: 0 24px 80px rgba(31, 42, 31, 0.12);
   --radius-xl: 30px;
   --radius-lg: 24px;
   --radius-md: 16px;
@@ -36,9 +36,9 @@ body {
   font-family: "Noto Sans JP", sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at top left, rgba(196, 134, 71, 0.26), transparent 28%),
-    radial-gradient(circle at right top, rgba(35, 69, 50, 0.18), transparent 20%),
-    linear-gradient(180deg, var(--bg) 0%, #f8f2e7 48%, var(--bg-2) 100%);
+    radial-gradient(circle at top left, rgba(203, 137, 80, 0.28), transparent 24%),
+    radial-gradient(circle at 85% 8%, rgba(31, 77, 58, 0.18), transparent 18%),
+    linear-gradient(180deg, #f8f4eb 0%, var(--bg) 44%, var(--bg-2) 100%);
 }
 
 body::before {
@@ -96,7 +96,8 @@ button {
   height: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template-rows: 1fr;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 14px;
 }
 
 .hero,
@@ -128,6 +129,16 @@ button {
   grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.9fr);
   gap: 14px;
   align-items: stretch;
+}
+
+.hero-phase {
+  margin: 10px 0 0;
+  font-family: "Space Grotesk", "Noto Sans JP", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--forest);
 }
 
 .hero-copy h1,
@@ -184,6 +195,26 @@ button {
   max-width: 58ch;
 }
 
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 8px 12px;
+  border: 1px solid rgba(31, 77, 58, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--forest);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
 .hero-stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -202,6 +233,9 @@ button {
 .stat-card {
   padding: 14px;
   border-radius: var(--radius-md);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 249, 238, 0.96)),
+    var(--panel-strong);
 }
 
 .stat-card strong {
@@ -263,6 +297,33 @@ button {
 
 .screen-question > .surface:first-child .progress-track {
   margin-top: 0;
+}
+
+.question-brief {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid rgba(31, 77, 58, 0.1);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(31, 77, 58, 0.08), rgba(203, 137, 80, 0.08));
+}
+
+.question-brief-title,
+.question-brief-copy,
+.number-caption {
+  margin: 0;
+}
+
+.question-brief-title {
+  font-family: "Space Grotesk", "Noto Sans JP", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.question-brief-copy {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
 }
 
 .feedback-surface {
@@ -667,11 +728,19 @@ button {
   display: grid;
   place-items: center;
   text-align: center;
+  gap: 8px;
   padding: 20px;
   border-radius: var(--radius-lg);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(241, 234, 221, 0.97)),
     linear-gradient(135deg, rgba(196, 134, 71, 0.14), rgba(35, 69, 50, 0.08));
+}
+
+.number-caption {
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .number-value {
@@ -854,6 +923,18 @@ button {
 
 .result-accuracy {
   margin: 0;
+  color: var(--forest);
+  font-weight: 700;
+}
+
+.result-band {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 40px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(31, 77, 58, 0.12), rgba(203, 137, 80, 0.12));
   color: var(--forest);
   font-weight: 700;
 }
