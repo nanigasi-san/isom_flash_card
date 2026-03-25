@@ -4,13 +4,14 @@ export function getQuestionLabel(question) {
 
 export function formatElapsedTime(totalMs) {
   const safeMs = Math.max(0, totalMs);
-  const totalSeconds = Math.floor(safeMs / 1000);
+  const totalSeconds = safeMs / 1000;
   const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
+  const seconds = totalSeconds - minutes * 60;
+  const secondsLabel = seconds.toFixed(1).padStart(minutes > 0 ? 4 : 0, "0");
 
   if (minutes === 0) {
-    return `${seconds}秒`;
+    return `${secondsLabel}秒`;
   }
 
-  return `${minutes}分${seconds.toString().padStart(2, "0")}秒`;
+  return `${minutes}分${secondsLabel}秒`;
 }

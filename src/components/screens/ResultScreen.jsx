@@ -3,6 +3,8 @@ import { QUIZ_DIFFICULTY_OPTIONS } from "../../lib/quizConfig";
 import { formatElapsedTime } from "../../lib/quizDisplay";
 import { SummaryCard, Surface } from "../ui";
 
+const SHARE_URL = "https://isom-flash-card.vercel.app/";
+
 export function ResultScreen({
   score,
   totalQuestions,
@@ -33,7 +35,7 @@ export function ResultScreen({
     } をプレイ`,
     `結果: ${score}/${totalQuestions}問正解 (${accuracy}%)`,
     `解答時間: ${formattedAnswerTime} / 1問あたり${formattedAverageAnswerTime}`,
-    window.location.origin,
+    SHARE_URL,
   ].join("\n");
 
   function handleShareToX() {
