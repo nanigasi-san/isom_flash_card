@@ -38,7 +38,7 @@ export function SetupScreen({
           rel="noreferrer"
         >
           <span className="reference-link-kicker">Reference</span>
-          <span className="reference-link-title">参考リンク</span>
+          <span className="reference-link-title">ISOM2017-2(日本語PDF)</span>
           <span className="reference-link-arrow" aria-hidden="true">↗</span>
         </a>
         {sessionError ? <p className="error-copy">{sessionError}</p> : null}
