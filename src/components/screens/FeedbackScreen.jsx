@@ -10,9 +10,22 @@ export function FeedbackScreen({ question, isLastQuestion, onNext }) {
   const selectedNumber = selectedItem?.number || "-";
   const isCorrect = Boolean(question?.isCorrect);
   const toneClassName = isCorrect ? "is-correct" : "is-incorrect";
+  const nextLabel = isLastQuestion ? "結果を見る" : "次の問題へ";
 
   return (
-    <div className="screen screen-feedback">
+    <div
+      className="screen screen-feedback"
+      role="button"
+      tabIndex={0}
+      onClick={onNext}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onNext();
+        }
+      }}
+      aria-label={nextLabel}
+    >
       <Surface className={`feedback-surface ${toneClassName}`.trim()} bodyClassName="feedback-layout">
         <h2 className={`feedback-status ${toneClassName}`.trim()}>{isCorrect ? "正解！" : "不正解"}</h2>
 
@@ -71,8 +84,15 @@ export function FeedbackScreen({ question, isLastQuestion, onNext }) {
           </>
         )}
 
-        <button type="button" className="primary-button feedback-next-button" onClick={onNext}>
-          {isLastQuestion ? "結果を見る" : "次の問題へ"}
+        <button
+          type="button"
+          className="primary-button feedback-next-button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onNext();
+          }}
+        >
+          {nextLabel}
         </button>
       </Surface>
     </div>
