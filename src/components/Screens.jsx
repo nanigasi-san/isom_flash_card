@@ -47,15 +47,11 @@ export function SetupScreen({
   return (
     <div className="screen screen-two-column">
       <Surface eyebrow="Setup" title="出題条件を選ぶ" bodyClassName="stack">
-        <p className="support-copy">開始後はスクロールなしで 1 問ずつ解けます。</p>
         {sessionError ? <p className="error-copy">{sessionError}</p> : null}
         <section className="setup-section setup-section-mode">
           <div className="setup-section-header">
             <span className="setup-section-step">1</span>
-            <div>
-              <h3 className="setup-section-title">モード選択</h3>
-              <p className="setup-section-copy">まず出題の方式を決めます。</p>
-            </div>
+            <h3 className="setup-section-title">モード</h3>
           </div>
           <div className="mode-grid">
             {QUIZ_MODE_OPTIONS.map((option) => (
@@ -79,10 +75,7 @@ export function SetupScreen({
           <section className="setup-section setup-section-scope">
             <div className="setup-section-header">
               <span className="setup-section-step">2</span>
-              <div>
-                <h3 className="setup-section-title">出題範囲</h3>
-                <p className="setup-section-copy">覚えたい100番台をひとつ選びます。</p>
-              </div>
+              <h3 className="setup-section-title">出題範囲</h3>
             </div>
             <div className="hundreds-grid">
               {HUNDREDS_OPTIONS.map((option) => (
@@ -101,14 +94,11 @@ export function SetupScreen({
             </div>
           </section>
         ) : (
-          <>
+          <div className="setup-section-grid">
             <section className="setup-section setup-section-count">
               <div className="setup-section-header">
                 <span className="setup-section-step">2</span>
-                <div>
-                  <h3 className="setup-section-title">問題数</h3>
-                  <p className="setup-section-copy">1回で解く量を決めます。</p>
-                </div>
+                <h3 className="setup-section-title">問題数</h3>
               </div>
               <div className="count-grid">
                 {QUESTION_COUNT_OPTIONS.map((count) => (
@@ -127,10 +117,7 @@ export function SetupScreen({
             <section className="setup-section setup-section-difficulty">
               <div className="setup-section-header">
                 <span className="setup-section-step">3</span>
-                <div>
-                  <h3 className="setup-section-title">難易度選択</h3>
-                  <p className="setup-section-copy">選択肢の絞り方を決めます。</p>
-                </div>
+                <h3 className="setup-section-title">難易度</h3>
               </div>
               <div className="difficulty-grid">
                 {QUIZ_DIFFICULTY_OPTIONS.map((option) => (
@@ -150,7 +137,7 @@ export function SetupScreen({
                 ))}
               </div>
             </section>
-          </>
+          </div>
         )}
         <div className="selection-row">
           <div className="selection-pill">モード: {selectedMode.label}</div>
