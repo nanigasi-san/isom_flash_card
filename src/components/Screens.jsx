@@ -1,5 +1,10 @@
 import { isomItems, uniqueJapaneseNames } from "../data/isomDataset";
-import { QUESTION_COUNT_OPTIONS, QUIZ_DIFFICULTY_OPTIONS } from "../lib/quiz";
+import {
+  HUNDREDS_OPTIONS,
+  QUESTION_COUNT_OPTIONS,
+  QUIZ_DIFFICULTY_OPTIONS,
+  QUIZ_MODE_OPTIONS,
+} from "../lib/quiz";
 import { MetaPill, SummaryCard, Surface } from "./ui";
 
 function getQuestionLabel(question) {
@@ -22,53 +27,111 @@ function findItemByJapaneseName(name) {
 
 export function SetupScreen({
   questionCount,
+  mode,
   difficulty,
+  selectedHundreds,
   sessionError,
   onSelectCount,
+  onSelectMode,
   onSelectDifficulty,
+  onSelectHundreds,
   onStart,
 }) {
+  const selectedMode = QUIZ_MODE_OPTIONS.find((option) => option.value === mode) || QUIZ_MODE_OPTIONS[0];
   const selectedDifficulty =
     QUIZ_DIFFICULTY_OPTIONS.find((option) => option.value === difficulty) || QUIZ_DIFFICULTY_OPTIONS[0];
+  const selectedChallenge =
+    HUNDREDS_OPTIONS.find((option) => option.value === selectedHundreds) || HUNDREDS_OPTIONS[0];
+  const isChallengeMode = mode === "challenge";
 
   return (
     <div className="screen screen-two-column">
-      <Surface eyebrow="Setup" title="問題数を選ぶ" bodyClassName="stack">
+      <Surface eyebrow="Setup" title="出題条件を選ぶ" bodyClassName="stack">
         <p className="support-copy">開始後はスクロールなしで 1 問ずつ解けます。</p>
         {sessionError ? <p className="error-copy">{sessionError}</p> : null}
-        <div className="count-grid">
-          {QUESTION_COUNT_OPTIONS.map((count) => (
-            <button
-              key={count}
-              type="button"
-              className={`count-button ${questionCount === count ? "is-active" : ""}`.trim()}
-              onClick={() => onSelectCount(count)}
-            >
-              <span className="count-value">{count}</span>
-              <span className="count-label">問</span>
-            </button>
-          ))}
-        </div>
-        <div className="difficulty-grid">
-          {QUIZ_DIFFICULTY_OPTIONS.map((option) => (
+        <div className="mode-grid">
+          {QUIZ_MODE_OPTIONS.map((option) => (
             <button
               key={option.value}
               type="button"
-              className={`difficulty-button ${difficulty === option.value ? "is-active" : ""}`.trim()}
-              onClick={() => onSelectDifficulty(option.value)}
+              className={`difficulty-button ${mode === option.value ? "is-active" : ""}`.trim()}
+              onClick={() => onSelectMode(option.value)}
             >
-              <span className="difficulty-title">難易度: {option.label}</span>
+              <span className="difficulty-title">{option.label}</span>
               <span className="difficulty-note">
-                {option.value === "normal"
-                  ? "全記号から6択"
-                  : "同じ100番台のみ（600番台は3択）"}
+                {option.value === "random"
+                  ? "問題数を選んでランダム出題"
+                  : "指定した100番台を全問出題"}
               </span>
             </button>
           ))}
         </div>
+        {isChallengeMode ? (
+          <div className="stack">
+            <p className="support-copy">覚えたい100番台を選ぶと、その番台の記号がすべて出題されます。</p>
+            <div className="hundreds-grid">
+              {HUNDREDS_OPTIONS.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`count-button ${selectedHundreds === option.value ? "is-active" : ""}`.trim()}
+                  onClick={() => onSelectHundreds(option.value)}
+                >
+                  <span className="count-value">{option.value}</span>
+                  <span className="count-label">
+                    番台 / 全{option.count}問
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="count-grid">
+              {QUESTION_COUNT_OPTIONS.map((count) => (
+                <button
+                  key={count}
+                  type="button"
+                  className={`count-button ${questionCount === count ? "is-active" : ""}`.trim()}
+                  onClick={() => onSelectCount(count)}
+                >
+                  <span className="count-value">{count}</span>
+                  <span className="count-label">問</span>
+                </button>
+              ))}
+            </div>
+            <div className="difficulty-grid">
+              {QUIZ_DIFFICULTY_OPTIONS.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`difficulty-button ${difficulty === option.value ? "is-active" : ""}`.trim()}
+                  onClick={() => onSelectDifficulty(option.value)}
+                >
+                  <span className="difficulty-title">難易度: {option.label}</span>
+                  <span className="difficulty-note">
+                    {option.value === "normal"
+                      ? "全記号から6択"
+                      : "同じ100番台のみ（600番台は3択）"}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
         <div className="selection-row">
-          <div className="selection-pill">現在の問題数: {questionCount}問</div>
-          <div className="selection-pill">難易度: {selectedDifficulty.label}</div>
+          <div className="selection-pill">モード: {selectedMode.label}</div>
+          {isChallengeMode ? (
+            <>
+              <div className="selection-pill">範囲: {selectedChallenge?.label}</div>
+              <div className="selection-pill">全{selectedChallenge?.count ?? 0}問</div>
+            </>
+          ) : (
+            <>
+              <div className="selection-pill">現在の問題数: {questionCount}問</div>
+              <div className="selection-pill">難易度: {selectedDifficulty.label}</div>
+            </>
+          )}
         </div>
         <button type="button" className="primary-button" onClick={onStart}>
           はじめる
@@ -79,15 +142,19 @@ export function SetupScreen({
         <div className="rule-card-list">
           <div className="rule-card">
             <strong>1</strong>
-            <span>ISOM 番号を見る</span>
+            <span>{isChallengeMode ? "100番台を決めて、出題範囲を固定する" : "ISOM 番号を見る"}</span>
           </div>
           <div className="rule-card">
             <strong>2</strong>
-            <span>普通: 全体6択 / 難しい: 同100番台（600番台は3択）</span>
+            <span>
+              {isChallengeMode
+                ? "選択肢もその100番台だけ。全記号を1回ずつ出題"
+                : "普通: 全体6択 / 難しい: 同100番台（600番台は3択）"}
+            </span>
           </div>
           <div className="rule-card">
             <strong>3</strong>
-            <span>選択した瞬間に答え合わせ</span>
+            <span>{isChallengeMode ? "最後に a/n問正解 を確認する" : "選択した瞬間に答え合わせ"}</span>
           </div>
         </div>
 
@@ -219,27 +286,36 @@ export function FeedbackScreen({ question, isLastQuestion, onNext }) {
   );
 }
 
-export function ResultScreen({ score, totalQuestions, questionCount, onReplay, onReset }) {
+export function ResultScreen({ score, totalQuestions, mode, questionCount, selectedHundreds, onReplay, onReset }) {
   const accuracy = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
+  const challengeLabel =
+    HUNDREDS_OPTIONS.find((option) => option.value === selectedHundreds)?.label || `${selectedHundreds}番台`;
+  const replayLabel =
+    mode === "challenge" ? `もう一度 ${challengeLabel}` : `もう一度 ${questionCount}問`;
 
   return (
     <div className="screen screen-two-column">
       <Surface eyebrow="Result" title="今回の結果" bodyClassName="stack result-body">
-        <div className="result-score">
-          {score} / {totalQuestions}
-        </div>
+        <div className="result-score">{score}/{totalQuestions}問正解</div>
         <p className="result-accuracy">正答率 {accuracy}%</p>
         <div className="mini-summary">
           <SummaryCard label="正解" value={score} />
           <SummaryCard label="不正解" value={totalQuestions - score} />
-          <SummaryCard label="問題数" value={questionCount} />
+          <SummaryCard
+            label={mode === "challenge" ? "出題範囲" : "問題数"}
+            value={mode === "challenge" ? challengeLabel : `${questionCount}問`}
+          />
         </div>
       </Surface>
 
       <Surface eyebrow="Next" title="続ける" bodyClassName="stack">
-        <p className="support-copy">同じ問題数でもう一度解くか、設定画面で問題数を変更できます。</p>
+        <p className="support-copy">
+          {mode === "challenge"
+            ? "同じ100番台でもう一度解くか、設定画面で別の番台に切り替えられます。"
+            : "同じ問題数でもう一度解くか、設定画面で問題数を変更できます。"}
+        </p>
         <button type="button" className="primary-button" onClick={onReplay}>
-          もう一度 {questionCount}問
+          {replayLabel}
         </button>
         <button type="button" className="secondary-button" onClick={onReset}>
           設定に戻る

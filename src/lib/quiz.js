@@ -2,6 +2,11 @@ import { isomItems, uniqueJapaneseNames } from "../data/isomDataset";
 
 export const QUESTION_COUNT_OPTIONS = [5, 10, 15, 20];
 export const DEFAULT_QUESTION_COUNT = QUESTION_COUNT_OPTIONS[1];
+export const QUIZ_MODE_OPTIONS = [
+  { value: "random", label: "ランダム" },
+  { value: "challenge", label: "チャレンジ" },
+];
+export const DEFAULT_QUIZ_MODE = QUIZ_MODE_OPTIONS[0].value;
 export const QUIZ_DIFFICULTY_OPTIONS = [
   { value: "normal", label: "普通" },
   { value: "hard", label: "難しい" },
@@ -29,7 +34,7 @@ function sampleUnique(values, count) {
   return shuffle(values).slice(0, count);
 }
 
-function getCategoryByHundreds(number) {
+export function getCategoryByHundreds(number) {
   const numeric = Number.parseFloat(number);
 
   if (!Number.isFinite(numeric)) {
@@ -37,6 +42,33 @@ function getCategoryByHundreds(number) {
   }
 
   return Math.floor(numeric / 100) * 100;
+}
+
+const itemsByHundreds = isomItems.reduce((groups, item) => {
+  const category = getCategoryByHundreds(item.number);
+
+  if (!groups.has(category)) {
+    groups.set(category, []);
+  }
+
+  groups.get(category).push(item);
+  return groups;
+}, new Map());
+
+export const HUNDREDS_OPTIONS = Array.from(itemsByHundreds.entries())
+  .sort(([left], [right]) => left - right)
+  .map(([value, items]) => ({
+    value,
+    label: `${value}番台`,
+    count: items.length,
+  }));
+
+export const DEFAULT_CHALLENGE_HUNDREDS = HUNDREDS_OPTIONS[0]?.value ?? 100;
+
+function getJapaneseNamesByHundreds(category) {
+  return Array.from(
+    new Set((itemsByHundreds.get(category) ?? []).map((item) => item.japaneseName))
+  );
 }
 
 function buildNormalOptions(item) {
@@ -51,13 +83,7 @@ function buildNormalOptions(item) {
 
 function buildHardOptions(item) {
   const category = getCategoryByHundreds(item.number);
-  const categoryNames = Array.from(
-    new Set(
-      isomItems
-        .filter((candidate) => getCategoryByHundreds(candidate.number) === category)
-        .map((candidate) => candidate.japaneseName)
-    )
-  );
+  const categoryNames = getJapaneseNamesByHundreds(category);
 
   if (!categoryNames.includes(item.japaneseName)) {
     categoryNames.push(item.japaneseName);
@@ -69,9 +95,38 @@ function buildHardOptions(item) {
   return shuffle([item.japaneseName, ...sampleUnique(distractors, optionCount - 1)]);
 }
 
-export function createQuestions(questionCount, difficulty = DEFAULT_QUIZ_DIFFICULTY) {
-  return sampleUnique(isomItems, questionCount).map((item) => {
-    const options = difficulty === "hard" ? buildHardOptions(item) : buildNormalOptions(item);
+function buildChallengeOptions(item) {
+  const categoryNames = getJapaneseNamesByHundreds(getCategoryByHundreds(item.number));
+
+  if (!categoryNames.includes(item.japaneseName)) {
+    categoryNames.push(item.japaneseName);
+  }
+
+  return shuffle(categoryNames);
+}
+
+export function createQuestions({
+  questionCount = DEFAULT_QUESTION_COUNT,
+  difficulty = DEFAULT_QUIZ_DIFFICULTY,
+  mode = DEFAULT_QUIZ_MODE,
+  selectedHundreds = DEFAULT_CHALLENGE_HUNDREDS,
+} = {}) {
+  const sourceItems =
+    mode === "challenge"
+      ? shuffle(itemsByHundreds.get(selectedHundreds) ?? [])
+      : sampleUnique(isomItems, questionCount);
+
+  if (sourceItems.length === 0) {
+    throw new Error("No quiz questions were generated.");
+  }
+
+  return sourceItems.map((item) => {
+    const options =
+      mode === "challenge"
+        ? buildChallengeOptions(item)
+        : difficulty === "hard"
+          ? buildHardOptions(item)
+          : buildNormalOptions(item);
 
     return {
       item,

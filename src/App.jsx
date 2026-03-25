@@ -5,14 +5,18 @@ export default function App() {
   const {
     phase,
     questionCount,
+    mode,
     difficulty,
+    selectedHundreds,
     questions,
     currentIndex,
     currentQuestion,
     score,
     sessionError,
     setQuestionCount,
+    setMode,
     setDifficulty,
+    setSelectedHundreds,
     startSession,
     answerChoice,
     moveToNext,
@@ -32,10 +36,14 @@ export default function App() {
           {phase === "setup" ? (
             <SetupScreen
               questionCount={questionCount}
+              mode={mode}
               difficulty={difficulty}
+              selectedHundreds={selectedHundreds}
               sessionError={sessionError}
               onSelectCount={setQuestionCount}
+              onSelectMode={setMode}
               onSelectDifficulty={setDifficulty}
+              onSelectHundreds={setSelectedHundreds}
               onStart={startSession}
             />
           ) : null}
@@ -62,7 +70,9 @@ export default function App() {
             <ResultScreen
               score={score}
               totalQuestions={questions.length}
+              mode={mode}
               questionCount={questionCount}
+              selectedHundreds={selectedHundreds}
               onReplay={replaySession}
               onReset={resetSession}
             />
