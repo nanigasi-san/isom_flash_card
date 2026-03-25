@@ -68,6 +68,7 @@ export default function App() {
             score={score}
             totalQuestions={questions.length}
             mode={mode}
+            difficulty={difficulty}
             questionCount={questionCount}
             selectedHundreds={selectedHundreds}
             totalAnswerTimeMs={totalAnswerTimeMs}

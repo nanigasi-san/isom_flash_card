@@ -31,7 +31,6 @@ export function SetupScreen({
   return (
     <div className="screen screen-two-column">
       <Surface eyebrow="Setup" title="出題条件を選ぶ" bodyClassName="stack">
-        <p className="support-copy">開始後はスクロールなしで 1 問ずつ解けます。</p>
         <a
           className="reference-link-card"
           href={ISOM_REFERENCE_URL}
@@ -39,77 +38,99 @@ export function SetupScreen({
           rel="noreferrer"
         >
           <span className="reference-link-kicker">Reference</span>
-          <span className="reference-link-title">ISOM2017-2(PDF/日本語)</span>
+          <span className="reference-link-title">参考リンク</span>
           <span className="reference-link-arrow" aria-hidden="true">↗</span>
         </a>
         {sessionError ? <p className="error-copy">{sessionError}</p> : null}
-        <div className="mode-grid">
-          {QUIZ_MODE_OPTIONS.map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              className={`difficulty-button ${mode === option.value ? "is-active" : ""}`.trim()}
-              onClick={() => onSelectMode(option.value)}
-            >
-              <span className="difficulty-title">{option.label}</span>
-              <span className="difficulty-note">
-                {option.value === "random"
-                  ? "問題数を選んでランダム出題"
-                  : "指定した100番台を全問出題"}
-              </span>
-            </button>
-          ))}
-        </div>
+        <section className="setup-section setup-section-mode">
+          <div className="setup-section-header">
+            <span className="setup-section-step">1</span>
+            <h3 className="setup-section-title">モード</h3>
+          </div>
+          <div className="mode-grid">
+            {QUIZ_MODE_OPTIONS.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`difficulty-button option-card option-card-mode ${mode === option.value ? "is-active" : ""}`.trim()}
+                onClick={() => onSelectMode(option.value)}
+              >
+                <span className="difficulty-title">{option.label}</span>
+                <span className="difficulty-note">
+                  {option.value === "random"
+                    ? "問題数を選んでランダム出題"
+                    : "指定した100番台を全問出題"}
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
         {isChallengeMode ? (
-          <div className="stack">
-            <p className="support-copy">覚えたい100番台を選ぶと、その番台の記号がすべて出題されます。</p>
+          <section className="setup-section setup-section-scope">
+            <div className="setup-section-header">
+              <span className="setup-section-step">2</span>
+              <h3 className="setup-section-title">出題範囲</h3>
+            </div>
             <div className="hundreds-grid">
               {HUNDREDS_OPTIONS.map((option) => (
                 <button
                   key={option.value}
                   type="button"
-                  className={`count-button ${selectedHundreds === option.value ? "is-active" : ""}`.trim()}
+                  className={`count-button option-card option-card-count ${selectedHundreds === option.value ? "is-active" : ""}`.trim()}
                   onClick={() => onSelectHundreds(option.value)}
                 >
                   <span className="count-value">{option.value}</span>
-                  <span className="count-label">番台 / 全{option.count}問</span>
+                  <span className="count-label">{option.section} {option.description}</span>
+                  <span className="count-meta">全{option.count}問</span>
                 </button>
               ))}
             </div>
-          </div>
+          </section>
         ) : (
-          <>
-            <div className="count-grid">
-              {QUESTION_COUNT_OPTIONS.map((count) => (
-                <button
-                  key={count}
-                  type="button"
-                  className={`count-button ${questionCount === count ? "is-active" : ""}`.trim()}
-                  onClick={() => onSelectCount(count)}
-                >
-                  <span className="count-value">{count}</span>
-                  <span className="count-label">問</span>
-                </button>
-              ))}
-            </div>
-            <div className="difficulty-grid">
-              {QUIZ_DIFFICULTY_OPTIONS.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  className={`difficulty-button ${difficulty === option.value ? "is-active" : ""}`.trim()}
-                  onClick={() => onSelectDifficulty(option.value)}
-                >
-                  <span className="difficulty-title">難易度: {option.label}</span>
-                  <span className="difficulty-note">
-                    {option.value === "normal"
-                      ? "全記号から6択"
-                      : "同じ100番台のみ（600番台は3択）"}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </>
+          <div className="setup-section-grid">
+            <section className="setup-section setup-section-count">
+              <div className="setup-section-header">
+                <span className="setup-section-step">2</span>
+                <h3 className="setup-section-title">問題数</h3>
+              </div>
+              <div className="count-grid">
+                {QUESTION_COUNT_OPTIONS.map((count) => (
+                  <button
+                    key={count}
+                    type="button"
+                    className={`count-button option-card option-card-count ${questionCount === count ? "is-active" : ""}`.trim()}
+                    onClick={() => onSelectCount(count)}
+                  >
+                    <span className="count-value">{count}</span>
+                    <span className="count-label">問</span>
+                  </button>
+                ))}
+              </div>
+            </section>
+            <section className="setup-section setup-section-difficulty">
+              <div className="setup-section-header">
+                <span className="setup-section-step">3</span>
+                <h3 className="setup-section-title">難易度</h3>
+              </div>
+              <div className="difficulty-grid">
+                {QUIZ_DIFFICULTY_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`difficulty-button option-card option-card-difficulty ${difficulty === option.value ? "is-active" : ""}`.trim()}
+                    onClick={() => onSelectDifficulty(option.value)}
+                  >
+                    <span className="difficulty-title">難易度: {option.label}</span>
+                    <span className="difficulty-note">
+                      {option.value === "normal"
+                        ? "全記号から6択"
+                        : "同じ100番台のみ（600番台は3択）"}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          </div>
         )}
         <div className="selection-row">
           <div className="selection-pill">モード: {selectedMode.label}</div>
@@ -140,7 +161,7 @@ export function SetupScreen({
             <strong>2</strong>
             <span>
               {isChallengeMode
-                ? "選択肢もその100番台だけ。全記号を1回ずつ出題"
+                ? "各問題は同じ100番台から最大6択。指定した100番台を1回ずつ出題"
                 : "普通: 全体6択 / 難しい: 同100番台（600番台は3択）"}
             </span>
           </div>

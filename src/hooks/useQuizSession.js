@@ -1,4 +1,5 @@
-import { useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef } from "react";
+import { findUniqueItemByJapaneseName } from "../data/isomDataset";
 import {
   createQuestions,
   DEFAULT_CHALLENGE_HUNDREDS,
@@ -21,6 +22,33 @@ const SESSION_ACTIONS = {
   ADVANCE_QUESTION: "advance_question",
   RESET_SESSION: "reset_session",
 };
+
+const imagePreloadCache = new Set();
+
+function preloadImage(src) {
+  if (!src || imagePreloadCache.has(src)) {
+    return;
+  }
+
+  imagePreloadCache.add(src);
+
+  const image = new Image();
+  image.decoding = "async";
+  image.src = src;
+}
+
+function preloadQuestionAssets(question) {
+  if (!question) {
+    return;
+  }
+
+  preloadImage(question.item?.svgPath);
+
+  question.options?.forEach((option) => {
+    const matchedItem = findUniqueItemByJapaneseName(option);
+    preloadImage(matchedItem?.svgPath);
+  });
+}
 
 function createInitialState() {
   return {
@@ -122,6 +150,15 @@ export function useQuizSession() {
   const [state, dispatch] = useReducer(sessionReducer, undefined, createInitialState);
   const questionStartedAtRef = useRef(0);
   const currentQuestion = state.questions[state.currentIndex] ?? null;
+
+  useEffect(() => {
+    if (state.phase !== QUIZ_PHASES.QUESTION) {
+      return;
+    }
+
+    preloadQuestionAssets(state.questions[state.currentIndex]);
+    preloadQuestionAssets(state.questions[state.currentIndex + 1]);
+  }, [state.currentIndex, state.phase, state.questions]);
 
   function updateSettings(patch) {
     dispatch({

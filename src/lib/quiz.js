@@ -36,6 +36,26 @@ export function getCategoryByHundreds(number) {
   return Math.floor(numeric / 100) * 100;
 }
 
+export const HUNDREDS_CATEGORY_LABELS = {
+  100: "地形",
+  200: "岩石と崖",
+  300: "水系と湿地",
+  400: "植生",
+  500: "人工物",
+  600: "技術記号",
+  700: "コース設定記号",
+};
+
+export const HUNDREDS_SECTION_LABELS = {
+  100: "3.1",
+  200: "3.2",
+  300: "3.3",
+  400: "3.4",
+  500: "3.5",
+  600: "3.6",
+  700: "3.7",
+};
+
 const itemsByHundreds = isomItems.reduce((groups, item) => {
   const category = getCategoryByHundreds(item.number);
 
@@ -52,6 +72,8 @@ export const HUNDREDS_OPTIONS = Array.from(itemsByHundreds.entries())
   .map(([value, items]) => ({
     value,
     label: `${value}番台`,
+    section: HUNDREDS_SECTION_LABELS[value] ?? "",
+    description: HUNDREDS_CATEGORY_LABELS[value] ?? "その他",
     count: items.length,
   }));
 
@@ -88,13 +110,7 @@ function buildHardOptions(item) {
 }
 
 function buildChallengeOptions(item) {
-  const categoryNames = getJapaneseNamesByHundreds(getCategoryByHundreds(item.number));
-
-  if (!categoryNames.includes(item.japaneseName)) {
-    categoryNames.push(item.japaneseName);
-  }
-
-  return shuffle(categoryNames);
+  return buildHardOptions(item);
 }
 
 export function createQuestions({
