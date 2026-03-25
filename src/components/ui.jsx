@@ -20,12 +20,3 @@ export function SummaryCard({ label, value }) {
     </div>
   );
 }
-
-export function AnswerCard({ label, value, className = "" }) {
-  return (
-    <div className={`answer-card ${className}`.trim()}>
-      <span>{label}</span>
-      <strong>{value}</strong>
-    </div>
-  );
-}

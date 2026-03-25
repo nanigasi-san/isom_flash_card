@@ -1,17 +1,9 @@
 import { isomItems, uniqueJapaneseNames } from "../data/isomDataset";
-
-export const QUESTION_COUNT_OPTIONS = [5, 10, 30, 50];
-export const DEFAULT_QUESTION_COUNT = QUESTION_COUNT_OPTIONS[1];
-export const QUIZ_MODE_OPTIONS = [
-  { value: "random", label: "ランダム" },
-  { value: "challenge", label: "チャレンジ" },
-];
-export const DEFAULT_QUIZ_MODE = QUIZ_MODE_OPTIONS[0].value;
-export const QUIZ_DIFFICULTY_OPTIONS = [
-  { value: "normal", label: "普通" },
-  { value: "hard", label: "難しい" },
-];
-export const DEFAULT_QUIZ_DIFFICULTY = QUIZ_DIFFICULTY_OPTIONS[0].value;
+import {
+  DEFAULT_QUESTION_COUNT,
+  DEFAULT_QUIZ_DIFFICULTY,
+  DEFAULT_QUIZ_MODE,
+} from "./quizConfig";
 
 function shuffle(values) {
   const copy = values.slice();

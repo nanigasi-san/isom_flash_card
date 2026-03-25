@@ -53,3 +53,21 @@ export const isomItems = Object.entries(svgModules)
 export const uniqueJapaneseNames = Array.from(
   new Set(isomItems.map((item) => item.japaneseName))
 );
+
+const itemsByJapaneseName = isomItems.reduce((groups, item) => {
+  if (!groups.has(item.japaneseName)) {
+    groups.set(item.japaneseName, []);
+  }
+
+  groups.get(item.japaneseName).push(item);
+  return groups;
+}, new Map());
+
+export function findUniqueItemByJapaneseName(name) {
+  if (!name) {
+    return null;
+  }
+
+  const matchedItems = itemsByJapaneseName.get(name) ?? [];
+  return matchedItems.length === 1 ? matchedItems[0] : null;
+}
